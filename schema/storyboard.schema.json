@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "heritage-short/storyboard.schema.json",
+  "title": "Heritage Short storyboard",
+  "description": "The contract between every pipeline stage. Each stage reads storyboard.json and writes only its own outputs.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "title", "logline", "audience", "intent", "language", "style", "voice", "characters", "music", "shots", "end_card"],
+  "properties": {
+    "version": { "const": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "logline": { "type": "string", "minLength": 1, "description": "One sentence that sums up the story." },
+    "audience": { "type": "string", "minLength": 1, "description": "Who watches, and where (e.g. on a phone, in a family group chat)." },
+    "intent": { "type": "string", "minLength": 1, "description": "What the audience should feel or understand when the film ends." },
+    "language": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["narration", "subtitles"],
+      "properties": {
+        "narration": { "type": "string", "minLength": 2, "description": "BCP-47 code of the narration language, e.g. am, om, ti, so, en." },
+        "subtitles": { "const": "en" }
+      }
+    },
+    "style": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["style_block"],
+      "properties": {
+        "style_block": { "type": "string", "minLength": 10, "description": "Fixed look description appended to every image prompt." },
+        "reference_image": { "type": ["string", "null"], "description": "Path to the approved golden reference image, relative to the repo root." }
+      }
+    },
+    "voice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "style_instruction"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "description": "Prebuilt TTS voice name." },
+        "style_instruction": { "type": "string", "minLength": 3, "description": "Plain-language delivery instruction, e.g. 'Read slowly, in a calm, warm voice'." }
+      }
+    },
+    "characters": { "type": "array", "items": { "$ref": "#/$defs/character" } },
+    "music": { "$ref": "#/$defs/music" },
+    "shots": { "type": "array", "minItems": 8, "maxItems": 12, "items": { "$ref": "#/$defs/shot" } },
+    "end_card": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "duration_s"],
+      "properties": {
+        "text": { "type": "string", "minLength": 5, "description": "Must say the film was made with AI." },
+        "duration_s": { "type": "number", "minimum": 2, "maximum": 6 }
+      }
+    }
+  },
+  "$defs": {
+    "character": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "description", "real_person"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "description": { "type": "string", "minLength": 10, "description": "Fixed visual description reused in every prompt that shows this character." },
+        "real_person": { "type": "boolean", "description": "True if this depicts or voices a real person. Real people need recorded consent." },
+        "consent": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["recorded", "ethics_ref"],
+          "properties": {
+            "recorded": { "type": "boolean" },
+            "ethics_ref": { "type": "string", "description": "Pointer to the consent row in ETHICS.md." }
+          }
+        },
+        "reference_image": { "type": ["string", "null"], "description": "Approved character sheet image, relative to the repo root." }
+      }
+    },
+    "music": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["caption", "bpm", "key", "instrumental", "cues"],
+      "properties": {
+        "caption": { "type": "string", "minLength": 10, "description": "Style, mood, instruments, texture, era. No tempo or key here." },
+        "bpm": { "type": "integer", "minimum": 40, "maximum": 200 },
+        "key": { "type": "string", "minLength": 1 },
+        "instrumental": { "type": "boolean" },
+        "lyrics": { "type": ["string", "null"] },
+        "chosen": { "type": ["string", "null"], "description": "Path of the chosen candidate track, relative to the repo root. Null = placeholder music." },
+        "chosen_reason": { "type": ["string", "null"] },
+        "volume_db": { "type": "number", "maximum": 0, "description": "Music level before ducking. Default -8." },
+        "cues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["start_s", "end_s", "note"],
+            "properties": {
+              "start_s": { "type": "number", "minimum": 0 },
+              "end_s": { "type": "number", "minimum": 0 },
+              "note": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+    "shot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "duration_s", "reason", "shot_size", "image_prompt", "motion_prompt", "seed", "render", "narration"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^s[0-9]{2}$" },
+        "duration_s": { "type": "number", "minimum": 2, "maximum": 15 },
+        "reason": { "type": "string", "minLength": 5, "description": "Why this shot exists, in one sentence." },
+        "shot_size": { "enum": ["extreme_wide", "wide", "medium", "medium_close_up", "close_up", "extreme_close_up", "insert"] },
+        "characters": { "type": "array", "items": { "type": "string" } },
+        "image_prompt": { "type": "string", "minLength": 10, "description": "What the keyframe shows. Style and character descriptions are added automatically." },
+        "motion_prompt": { "type": "string", "minLength": 3, "description": "Only motion and camera, for image-to-video." },
+        "seed": { "type": "integer", "minimum": 0 },
+        "render": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode"],
+          "properties": {
+            "mode": { "enum": ["wan", "kenburns"], "description": "wan = use an imported Wan 2.2 clip; kenburns = slow pan/zoom over the keyframe." },
+            "kenburns": { "enum": ["push_in", "pull_out", "pan_left", "pan_right", "static"] },
+            "crop_focus_x": { "type": "number", "minimum": 0, "maximum": 1, "description": "Horizontal crop centre when reframing (0 = left, 1 = right). Default 0.5." },
+            "trim_start_s": { "type": "number", "minimum": 0, "description": "Skip the weak first frames of a clip." }
+          }
+        },
+        "narration": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["text", "subtitle_en"],
+          "properties": {
+            "text": { "type": "string", "description": "Narration in the narration language. Empty string = no narration on this shot." },
+            "subtitle_en": { "type": "string", "description": "English subtitle for this line." },
+            "offset_s": { "type": "number", "minimum": 0, "description": "Seconds after the shot starts before the line begins. Default 0.3." }
+          }
+        }
+      }
+    }
+  }
+}

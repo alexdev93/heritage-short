@@ -1,0 +1,232 @@
+{
+  "version": 1,
+  "title": "TODO: film title",
+  "logline": "TODO: one sentence that sums up the story",
+  "audience": "TODO: who watches, and where (e.g. cousins in the diaspora, on their phones, in the family group chat)",
+  "intent": "TODO: what they should feel or understand when it ends",
+  "language": {
+    "narration": "am",
+    "subtitles": "en"
+  },
+  "style": {
+    "style_block": "TODO: fixed look for every shot — palette, light, medium, grain (e.g. warm, grainy, hand-painted)",
+    "reference_image": null
+  },
+  "voice": {
+    "name": "Kore",
+    "style_instruction": "Read slowly, in a calm, warm voice"
+  },
+  "characters": [
+    {
+      "id": "main_person",
+      "description": "TODO: fixed visual description — age, face, hair, clothing — reused in every prompt",
+      "real_person": true,
+      "consent": {
+        "recorded": false,
+        "ethics_ref": "ETHICS.md#consent-record"
+      },
+      "reference_image": null
+    }
+  ],
+  "music": {
+    "caption": "TODO: style, mood, instruments, texture, era (no tempo or key here)",
+    "bpm": 72,
+    "key": "A minor",
+    "instrumental": true,
+    "lyrics": null,
+    "chosen": null,
+    "chosen_reason": null,
+    "volume_db": -8,
+    "cues": [
+      {
+        "start_s": 0,
+        "end_s": 15,
+        "note": "TODO: what the music does here (e.g. sparse, sets the place)"
+      },
+      {
+        "start_s": 15,
+        "end_s": 52,
+        "note": "TODO: build under the story"
+      },
+      {
+        "start_s": 52,
+        "end_s": 64,
+        "note": "TODO: theme returns, resolve and fade on the end card"
+      }
+    ]
+  },
+  "shots": [
+    {
+      "id": "s01",
+      "duration_s": 7.5,
+      "reason": "TODO: why shot 1 exists, in one sentence",
+      "shot_size": "extreme_wide",
+      "characters": [],
+      "image_prompt": "TODO: what keyframe 1 shows (subject, place, light) — style is added automatically",
+      "motion_prompt": "TODO: motion and camera only, e.g. slow push-in, light wind",
+      "seed": 1001,
+      "render": {
+        "mode": "kenburns",
+        "kenburns": "push_in",
+        "crop_focus_x": 0.5
+      },
+      "narration": {
+        "text": "TODO narration line 1 in the narration language",
+        "subtitle_en": "TODO: English subtitle for narration line 1.",
+        "offset_s": 0.3
+      }
+    },
+    {
+      "id": "s02",
+      "duration_s": 7.5,
+      "reason": "TODO: why shot 2 exists, in one sentence",
+      "shot_size": "medium",
+      "characters": [
+        "main_person"
+      ],
+      "image_prompt": "TODO: what keyframe 2 shows (subject, place, light) — style is added automatically",
+      "motion_prompt": "TODO: motion and camera only, e.g. slow push-in, light wind",
+      "seed": 1002,
+      "render": {
+        "mode": "wan",
+        "kenburns": "pan_right",
+        "crop_focus_x": 0.5
+      },
+      "narration": {
+        "text": "TODO narration line 2 in the narration language",
+        "subtitle_en": "TODO: English subtitle for narration line 2.",
+        "offset_s": 0.3
+      }
+    },
+    {
+      "id": "s03",
+      "duration_s": 7.5,
+      "reason": "TODO: why shot 3 exists, in one sentence",
+      "shot_size": "close_up",
+      "characters": [
+        "main_person"
+      ],
+      "image_prompt": "TODO: what keyframe 3 shows (subject, place, light) — style is added automatically",
+      "motion_prompt": "TODO: motion and camera only, e.g. slow push-in, light wind",
+      "seed": 1003,
+      "render": {
+        "mode": "wan",
+        "kenburns": "push_in",
+        "crop_focus_x": 0.5
+      },
+      "narration": {
+        "text": "TODO narration line 3 in the narration language",
+        "subtitle_en": "TODO: English subtitle for narration line 3.",
+        "offset_s": 0.3
+      }
+    },
+    {
+      "id": "s04",
+      "duration_s": 7.5,
+      "reason": "TODO: why shot 4 exists, in one sentence",
+      "shot_size": "wide",
+      "characters": [],
+      "image_prompt": "TODO: what keyframe 4 shows (subject, place, light) — style is added automatically",
+      "motion_prompt": "TODO: motion and camera only, e.g. slow push-in, light wind",
+      "seed": 1004,
+      "render": {
+        "mode": "kenburns",
+        "kenburns": "pull_out",
+        "crop_focus_x": 0.5
+      },
+      "narration": {
+        "text": "TODO narration line 4 in the narration language",
+        "subtitle_en": "TODO: English subtitle for narration line 4.",
+        "offset_s": 0.3
+      }
+    },
+    {
+      "id": "s05",
+      "duration_s": 7.5,
+      "reason": "TODO: why shot 5 exists, in one sentence",
+      "shot_size": "insert",
+      "characters": [],
+      "image_prompt": "TODO: what keyframe 5 shows (subject, place, light) — style is added automatically",
+      "motion_prompt": "TODO: motion and camera only, e.g. slow push-in, light wind",
+      "seed": 1005,
+      "render": {
+        "mode": "wan",
+        "kenburns": "pan_left",
+        "crop_focus_x": 0.5
+      },
+      "narration": {
+        "text": "TODO narration line 5 in the narration language",
+        "subtitle_en": "TODO: English subtitle for narration line 5.",
+        "offset_s": 0.3
+      }
+    },
+    {
+      "id": "s06",
+      "duration_s": 7.5,
+      "reason": "TODO: why shot 6 exists, in one sentence",
+      "shot_size": "medium_close_up",
+      "characters": [
+        "main_person"
+      ],
+      "image_prompt": "TODO: what keyframe 6 shows (subject, place, light) — style is added automatically",
+      "motion_prompt": "TODO: motion and camera only, e.g. slow push-in, light wind",
+      "seed": 1006,
+      "render": {
+        "mode": "wan",
+        "kenburns": "push_in",
+        "crop_focus_x": 0.5
+      },
+      "narration": {
+        "text": "TODO narration line 6 in the narration language",
+        "subtitle_en": "TODO: English subtitle for narration line 6.",
+        "offset_s": 0.3
+      }
+    },
+    {
+      "id": "s07",
+      "duration_s": 7.5,
+      "reason": "TODO: why shot 7 exists, in one sentence",
+      "shot_size": "wide",
+      "characters": [],
+      "image_prompt": "TODO: what keyframe 7 shows (subject, place, light) — style is added automatically",
+      "motion_prompt": "TODO: motion and camera only, e.g. slow push-in, light wind",
+      "seed": 1007,
+      "render": {
+        "mode": "kenburns",
+        "kenburns": "static",
+        "crop_focus_x": 0.5
+      },
+      "narration": {
+        "text": "TODO narration line 7 in the narration language",
+        "subtitle_en": "TODO: English subtitle for narration line 7.",
+        "offset_s": 0.3
+      }
+    },
+    {
+      "id": "s08",
+      "duration_s": 7.5,
+      "reason": "TODO: why shot 8 exists, in one sentence",
+      "shot_size": "close_up",
+      "characters": [
+        "main_person"
+      ],
+      "image_prompt": "TODO: what keyframe 8 shows (subject, place, light) — style is added automatically",
+      "motion_prompt": "TODO: motion and camera only, e.g. slow push-in, light wind",
+      "seed": 1008,
+      "render": {
+        "mode": "wan",
+        "kenburns": "pull_out",
+        "crop_focus_x": 0.5
+      },
+      "narration": {
+        "text": "TODO narration line 8 in the narration language",
+        "subtitle_en": "TODO: English subtitle for narration line 8.",
+        "offset_s": 0.3
+      }
+    }
+  ],
+  "end_card": {
+    "text": "Made with AI — narration, images, video and music generated by AI models",
+    "duration_s": 4
+  }
+}
