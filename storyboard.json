@@ -172,7 +172,7 @@
       "motion_prompt": "he slaps the card down, both laugh, static camera",
       "seed": 3005,
       "render": {
-        "mode": "kenburns",
+        "mode": "wan",
         "kenburns": "pull_out",
         "crop_focus_x": 0.5
       },

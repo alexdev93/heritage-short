@@ -46,3 +46,4 @@
 {"ts": "2026-11-25T20:50:36+00:00", "stage": "assemble", "seconds": 277.27, "draft": false}
 {"ts": "2026-11-25T21:05:11+00:00", "stage": "narration", "seconds": 152.81}
 {"ts": "2026-11-25T21:07:55+00:00", "stage": "shots-export", "seconds": 0.25}
+{"ts": "2026-11-25T21:25:42+00:00", "stage": "shots-export", "seconds": 0.12}
