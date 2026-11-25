@@ -5,12 +5,12 @@ Write this before generating anything, then update it after each user test. In y
 ## Audience
 Who will watch this, and where (which device, which app, with whom)?
 
-TODO
+Ermias himself first, then our family and close friends, on their phones, in our family WhatsApp group.
 
 ## Intent
 What should they feel or understand when it ends? One sentence.
 
-TODO
+They should feel like they were there with us that night, and celebrate Ermias's news.
 
 ## The story
 Logline (one sentence) and the 3–5 beats, one picture per beat. Who told you this story, and what did talking to

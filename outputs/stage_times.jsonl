@@ -13,3 +13,5 @@
 {"ts": "2026-11-25T14:43:40+00:00", "stage": "shots-build", "seconds": 0.01}
 {"ts": "2026-11-25T14:43:40+00:00", "stage": "music-build", "seconds": 0.09}
 {"ts": "2026-11-25T14:45:20+00:00", "stage": "assemble", "seconds": 99.87, "draft": false}
+{"ts": "2026-11-25T19:21:06+00:00", "stage": "keyframes-build", "seconds": 4.22}
+{"ts": "2026-11-25T19:21:31+00:00", "stage": "keyframes-build", "seconds": 6.62}

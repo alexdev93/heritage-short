@@ -2,8 +2,8 @@
   "version": 1,
   "title": "The Last Bajaj",
   "logline": "On a rushed evening in Nazreth, a last bajaj, a sudden rain and a game of cards lead to the night my brother Ermias shared his good news.",
-  "audience": "TODO: who watches, and where (e.g. our parents and siblings, on their phones, in the family Telegram group)",
-  "intent": "TODO: what they should feel at the end (e.g. the pride I felt that night, and how close Ermias and I are)",
+  "audience": "Ermias himself first, then our family and close friends, on their phones, in our family WhatsApp group.",
+  "intent": "They should feel like they were there with us that night, and celebrate Ermias's news.",
   "language": {
     "narration": "am",
     "subtitles": "en"
@@ -30,12 +30,12 @@
     {
       "id": "narrator",
       "real_person": true,
-      "description": "TODO: you, the older brother: age, face, hair; wearing an olive-green jacket so you look different from Ermias",
+      "description": "a slim young man in his mid-twenties with a short full beard and curly dark hair, no glasses, wearing an olive-green jacket over a black crew-neck t-shirt",
       "consent": {
         "recorded": true,
         "ethics_ref": "ETHICS.md#consent-record (self: I made this film)"
       },
-      "reference_image": null
+      "reference_image": "refs/me.jpg"
     }
   ],
   "music": {
