@@ -6,6 +6,7 @@ Each function returns raw results plus a usage dict. Logging and retries happen 
 from __future__ import annotations
 
 import base64
+import functools
 import io
 import math
 import struct
@@ -17,7 +18,8 @@ from pipeline import config
 
 # ---------- Gemini (text + TTS) ----------
 
-def _gemini_client():
+@functools.cache  # one client for the whole run: a throwaway Client gets garbage-collected
+def _gemini_client():  # mid-request and closes its connection ("client has been closed", F2)
     from google import genai  # imported lazily so fake mode needs no SDK
 
     return genai.Client(api_key=config.require("GEMINI_API_KEY"))

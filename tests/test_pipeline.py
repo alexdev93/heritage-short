@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from pipeline import keyframes, narration, shots
+from pipeline import keyframes, narration, run, shots
 from pipeline.validate import check
 
 FIXTURE = Path(__file__).parent / "fixtures" / "storyboard.valid.json"
@@ -74,3 +74,10 @@ def test_wan_frame_counts_are_4n_plus_1_and_capped():
     for d in (2, 3.3, 5, 7.5, 12):
         f = shots.frame_num(d)
         assert (f - 1) % 4 == 0 and f <= 121
+
+
+def test_run_stops_before_any_stage_without_ffmpeg(monkeypatch, capsys):
+    monkeypatch.setattr(run.shutil, "which", lambda name: None)
+    with pytest.raises(SystemExit, match="FFmpeg is not installed"):
+        run.main(["film"])
+    assert "▶" not in capsys.readouterr().out  # no stage started

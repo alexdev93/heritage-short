@@ -8,6 +8,7 @@ Every stage is cached, so a rerun only regenerates what changed in storyboard.js
 """
 from __future__ import annotations
 
+import shutil
 import sys
 import time
 
@@ -23,11 +24,18 @@ PLANS = {
 }
 
 
+def check_tools() -> None:
+    """Fail fast if FFmpeg is missing, instead of crashing halfway through narration (F1)."""
+    if not (shutil.which("ffmpeg") and shutil.which("ffprobe")):
+        raise SystemExit("FFmpeg is not installed: run `sudo apt install ffmpeg`")
+
+
 def main(argv=None) -> None:
     argv = sys.argv[1:] if argv is None else argv
     plan = argv[0] if argv else "film"
     if plan not in PLANS:
         raise SystemExit(f"usage: python -m pipeline.run [{'|'.join(PLANS)}]")
+    check_tools()
     t0 = time.perf_counter()
     for name, fn, args in PLANS[plan]:
         print(f"\n▶ {name}", flush=True)
