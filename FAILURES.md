@@ -65,3 +65,18 @@ Cause: the newest flash model is overloaded; there is no client timeout, so the 
 Tried: 1) gemini-3.5-flash instead: ok in ~3 s.
 Fix or workaround: GEMINI_TEXT_MODEL=gemini-3.5-flash. Still open: a request timeout so one call can't hang a stage.
 Cost: ~25 min waiting.
+
+## F5 — The image model drew the jebena as a teapot and a kettle
+Date: 2026-11-25
+Symptom: in the example test (fictional story), the prompts asked for "a black clay jebena coffee pot".
+s04 showed a European-style teapot on a modern stove; in s05 the grandmother pours from a metal kettle.
+Same run: s07 asked for "a small child's hands" and got adult hands; s08 asked for evening and got daylight.
+Evidence: outputs/keyframes/s04-f6e2b36e6ea4.png (runs.jsonl 59877717f788),
+s05-192dab2410c3.png (89d6fcd2062c); contact sheet docs/example-keyframes.jpg.
+Cause: FLUX.1 schnell doesn't know the word "jebena", so it falls back to the nearest common object.
+Weak words ("small", "evening") lose to the style block's "golden morning light".
+Tried: 1) not yet rerun — noted while reviewing the 8 keyframes.
+Fix or workaround: describe objects by shape, not name ("a round-bottomed black clay pot with a long
+narrow neck and a straw stopper"); state age and light strongly ("a seven-year-old girl's small hands",
+"at night, lit by one warm lamp, dark window behind"). Applies to my real storyboard.
+Cost: none yet (8 images, ~38 s); would cost a rerun per shot if it had reached the film.
