@@ -71,3 +71,22 @@ def test_client_uses_v1beta(monkeypatch):
         assert providers._gemini_client()._api_client._http_options.api_version == "v1beta"
     finally:
         providers._gemini_client.cache_clear()
+
+
+def test_client_times_out_and_leaves_retries_to_the_pipeline(monkeypatch):
+    """The SDK's own silent retries hung a radio cut for 12+ min (FAILURES F6)."""
+    monkeypatch.setattr(providers.config, "require", lambda name: "test-key")
+    providers._gemini_client.cache_clear()
+    try:
+        opts = providers._gemini_client()._api_client._http_options
+        assert opts.timeout == providers.GEMINI_TIMEOUT_MS
+        assert opts.retry_options.attempts == 1
+    finally:
+        providers._gemini_client.cache_clear()
+
+
+def test_network_errors_become_retryable():
+    class ReadTimeout(Exception):
+        pass
+    assert isinstance(providers._wrap_gemini_error(ReadTimeout("slow")), providers.C.RetryableError)
+    assert not isinstance(providers._wrap_gemini_error(ValueError("bad")), providers.C.RetryableError)

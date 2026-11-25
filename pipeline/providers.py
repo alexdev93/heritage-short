@@ -23,15 +23,26 @@ from pipeline import config
 def _gemini_client():  # mid-request and closes its connection ("client has been closed", F2)
     from google import genai  # imported lazily so fake mode needs no SDK
 
-    # v1beta: this SDK defaults to v1, which has no TTS fields (speechConfig 400 / TTS model 404, F3)
+    # v1beta: this SDK defaults to v1, which has no TTS fields (speechConfig 400 / TTS model 404, F3).
+    # timeout + attempts=1: fail within 2 min and let common.with_retries retry, so every attempt is
+    # logged in runs.jsonl; the SDK's own silent retries had a radio cut hanging for 12+ min (F6).
     return genai.Client(api_key=config.require("GEMINI_API_KEY"),
-                        http_options=genai.types.HttpOptions(api_version="v1beta"))
+                        http_options=genai.types.HttpOptions(
+                            api_version="v1beta", timeout=GEMINI_TIMEOUT_MS,
+                            retry_options=genai.types.HttpRetryOptions(attempts=1)))
+
+
+GEMINI_TIMEOUT_MS = 120_000  # slowest TTS line so far took 55 s
+_NETWORK_ERRORS = {"ReadTimeout", "ConnectTimeout", "WriteTimeout", "PoolTimeout", "TimeoutException",
+                   "ConnectError", "ReadError", "RemoteProtocolError", "APITimeoutError", "APIConnectionError"}
 
 
 def _wrap_gemini_error(e: Exception) -> Exception:
     code = getattr(e, "code", None) or getattr(e, "status_code", None)
     if code in C.RETRY_CODES:
         return C.RetryableError(f"Gemini HTTP {code}: {e}")
+    if type(e).__name__ in _NETWORK_ERRORS:  # timeouts / dropped connections: worth another try
+        return C.RetryableError(f"Gemini network: {type(e).__name__}: {e}")
     return e
 
 

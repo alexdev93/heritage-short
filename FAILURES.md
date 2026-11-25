@@ -80,3 +80,15 @@ Fix or workaround: describe objects by shape, not name ("a round-bottomed black 
 narrow neck and a straw stopper"); state age and light strongly ("a seven-year-old girl's small hands",
 "at night, lit by one warm lamp, dark window behind"). Applies to my real storyboard.
 Cost: none yet (8 images, ~38 s); would cost a rerun per shot if it had reached the film.
+
+## F6 — make radio-cut hung silently in narration for 12+ min
+Date: 2026-11-25
+Symptom: `make radio-cut` printed "▶ narration" and nothing else for 12 minutes; no new rows in runs.jsonl.
+Evidence: process asleep (hrtimer_nanosleep) with a CLOSE-WAIT socket to Google; earlier the same
+evening, FLUX.2 keyframe calls failed with NameResolutionError (runs.jsonl 715170808893, 9f2f670c3488).
+Cause: the Gemini client had no timeout and the SDK retried internally, so our with_retries never
+saw the error and nothing was logged. (The open item from F4.)
+Tried: 1) checked the network: Google API reachable in ~1 s  2) read the SDK's retry options.
+Fix: HttpOptions(timeout=120 s, retry_options attempts=1); timeouts/connection errors wrapped as
+RetryableError so with_retries retries them visibly. Tests in tests/test_tts.py.
+Cost: ~15 min.
