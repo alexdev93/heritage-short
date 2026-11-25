@@ -35,19 +35,39 @@ def _clean(s: str) -> str:
     return s.strip().rstrip(".")
 
 
-def build_prompt(sb: dict, shot: dict) -> str:
-    chars = {c["id"]: c for c in sb["characters"]}
-    parts = [SHOT_SIZE[shot["shot_size"]], shot["image_prompt"]]
-    parts += [chars[c]["description"] for c in shot.get("characters", []) if c in chars]
-    parts.append(sb["style"]["style_block"])
-    return ". ".join(_clean(p) for p in parts if p and p.strip())
+def uses_references() -> bool:
+    """Only FLUX.2 models take reference images; FLUX.1 schnell ignores them."""
+    return "flux-2" in config.MODELS["image"]
+
+
+def _shot_characters(sb: dict, shot: dict) -> list[dict]:
+    """The shot's characters in the order of the storyboard's `characters` list, so each person keeps
+    the same image slot in every shot (the first-listed person with a reference is always image 0)."""
+    wanted = set(shot.get("characters", []))
+    return [c for c in sb["characters"] if c["id"] in wanted]
 
 
 def reference_images(sb: dict, shot: dict) -> list[str]:
-    chars = {c["id"]: c for c in sb["characters"]}
-    refs = [chars[c].get("reference_image") for c in shot.get("characters", []) if c in chars]
-    refs.append(sb["style"].get("reference_image"))
-    return [r for r in refs if r]
+    refs = [c["reference_image"] for c in _shot_characters(sb, shot) if c.get("reference_image")]
+    if sb["style"].get("reference_image"):
+        refs.append(sb["style"]["reference_image"])
+    return refs
+
+
+def build_prompt(sb: dict, shot: dict) -> str:
+    parts = [SHOT_SIZE[shot["shot_size"]], shot["image_prompt"]]
+    slot = 0
+    for c in _shot_characters(sb, shot):
+        desc = _clean(c["description"])
+        if uses_references() and c.get("reference_image"):
+            desc += f", with exactly the face of the person in image {slot}"
+            slot += 1
+        parts.append(desc)
+    style = _clean(sb["style"]["style_block"])
+    if uses_references() and sb["style"].get("reference_image"):
+        style += f", in the visual style of image {slot}"
+    parts.append(style)
+    return ". ".join(_clean(p) for p in parts if p and p.strip())
 
 
 def cache_key(sb: dict, shot: dict) -> str:
@@ -56,6 +76,7 @@ def cache_key(sb: dict, shot: dict) -> str:
            "steps": config.CF_IMAGE_STEPS, "seed_sent": config.CF_IMAGE_SEND_SEED, "fake": C.FAKE}
     if "flux-2" in model:  # only models that actually use references depend on them
         key["refs"] = [C.file_sha(r) for r in reference_images(sb, shot)]
+        key["size"] = [config.CF_IMAGE_WIDTH, config.CF_IMAGE_HEIGHT]  # FLUX.2 renders at this size
     return C.sha(key)
 
 

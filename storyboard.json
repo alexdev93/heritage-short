@@ -1,36 +1,46 @@
 {
   "version": 1,
-  "title": "TODO: film title",
-  "logline": "TODO: one sentence that sums up the story",
-  "audience": "TODO: who watches, and where (e.g. cousins in the diaspora, on their phones, in the family group chat)",
-  "intent": "TODO: what they should feel or understand when it ends",
+  "title": "The Last Bajaj",
+  "logline": "On a rushed evening in Nazreth, a last bajaj, a sudden rain and a game of cards lead to the night my brother Ermias shared his good news.",
+  "audience": "TODO: who watches, and where (e.g. our parents and siblings, on their phones, in the family Telegram group)",
+  "intent": "TODO: what they should feel at the end (e.g. the pride I felt that night, and how close Ermias and I are)",
   "language": {
     "narration": "am",
     "subtitles": "en"
   },
   "style": {
-    "style_block": "TODO: fixed look for every shot — palette, light, medium, grain (e.g. warm, grainy, hand-painted)",
+    "style_block": "cinematic 35mm film still, photorealistic, natural dusk-to-night light in Adama, Ethiopia, warm amber streetlamp and shop light against deep twilight-blue shadows, shallow depth of field with a softly blurred background, subtle film grain, no text, no letters, no logos, no watermark",
     "reference_image": null
   },
   "voice": {
-    "name": "Kore",
-    "style_instruction": "Read slowly, in a calm, warm voice"
+    "name": "Charon",
+    "style_instruction": "Warm, gentle and a little proud, like telling family about a night you will never forget"
   },
   "characters": [
     {
-      "id": "main_person",
-      "description": "TODO: fixed visual description — age, face, hair, clothing — reused in every prompt",
+      "id": "ermias",
       "real_person": true,
+      "description": "a slim young Ethiopian man with dark brown skin, short black hair and a wide, warm smile, wearing a dark navy jacket over a plain white t-shirt and dark jeans",
       "consent": {
-        "recorded": false,
+        "recorded": true,
         "ethics_ref": "ETHICS.md#consent-record"
+      },
+      "reference_image": "refs/ermias.png"
+    },
+    {
+      "id": "narrator",
+      "real_person": true,
+      "description": "TODO: you, the older brother: age, face, hair; wearing an olive-green jacket so you look different from Ermias",
+      "consent": {
+        "recorded": true,
+        "ethics_ref": "ETHICS.md#consent-record (self: I made this film)"
       },
       "reference_image": null
     }
   ],
   "music": {
-    "caption": "TODO: style, mood, instruments, texture, era (no tempo or key here)",
-    "bpm": 72,
+    "caption": "warm modern Ethiopian instrumental with krar, soft electric guitar, gentle bass and light hand percussion, hopeful and nostalgic, night-time city feeling",
+    "bpm": 84,
     "key": "A minor",
     "instrumental": true,
     "lyrics": null,
@@ -40,193 +50,209 @@
     "cues": [
       {
         "start_s": 0,
-        "end_s": 15,
-        "note": "TODO: what the music does here (e.g. sparse, sets the place)"
+        "end_s": 14.5,
+        "note": "night-city pulse, light and quick, under the rush"
       },
       {
-        "start_s": 15,
-        "end_s": 52,
-        "note": "TODO: build under the story"
+        "start_s": 14.5,
+        "end_s": 38,
+        "note": "playful energy through the bajaj ride, the rain and the card game"
       },
       {
-        "start_s": 52,
-        "end_s": 64,
-        "note": "TODO: theme returns, resolve and fade on the end card"
+        "start_s": 38,
+        "end_s": 54,
+        "note": "drops to soft and sparse for the news and the quiet bond"
+      },
+      {
+        "start_s": 54,
+        "end_s": 65,
+        "note": "warm resolve on the walk home, fade on the end card"
       }
     ]
   },
   "shots": [
     {
       "id": "s01",
-      "duration_s": 7.5,
-      "reason": "TODO: why shot 1 exists, in one sentence",
+      "duration_s": 7.0,
+      "reason": "Grounds the viewer in Nazreth, the season and the evening rush.",
       "shot_size": "extreme_wide",
       "characters": [],
-      "image_prompt": "TODO: what keyframe 1 shows (subject, place, light) — style is added automatically",
-      "motion_prompt": "TODO: motion and camera only, e.g. slow push-in, light wind",
-      "seed": 1001,
+      "image_prompt": "a palm-lined main avenue in Adama (Nazreth), Ethiopia at dusk, warm streetlamps coming on, several small blue and white three-wheeled bajaj auto-rickshaws with a single front wheel in the evening traffic, pedestrians on the sidewalk, shop signs softly out of focus",
+      "motion_prompt": "traffic moves slowly, streetlights flicker on, slow pan right",
+      "seed": 3001,
       "render": {
         "mode": "kenburns",
-        "kenburns": "push_in",
+        "kenburns": "pan_right",
         "crop_focus_x": 0.5
       },
       "narration": {
-        "text": "TODO narration line 1 in the narration language",
-        "subtitle_en": "TODO: English subtitle for narration line 1.",
-        "offset_s": 0.3
+        "text": "ባለፈው ዓመት በዚህ ሰዓት፣ ናዝሬት ምሽቱን ስትቀበል...",
+        "subtitle_en": "Last year around this time, as Nazreth welcomed the evening...",
+        "offset_s": 0.4
       }
     },
     {
       "id": "s02",
       "duration_s": 7.5,
-      "reason": "TODO: why shot 2 exists, in one sentence",
+      "reason": "Introduces Ermias and me, and the urgency of the last-minute catch.",
       "shot_size": "medium",
       "characters": [
-        "main_person"
+        "ermias",
+        "narrator"
       ],
-      "image_prompt": "TODO: what keyframe 2 shows (subject, place, light) — style is added automatically",
-      "motion_prompt": "TODO: motion and camera only, e.g. slow push-in, light wind",
-      "seed": 1002,
+      "image_prompt": "two brothers jogging along a busy sidewalk at dusk; the young man in the navy jacket glances at his wristwatch while his brother in the olive-green jacket raises a hand to stop a small blue and white three-wheeled bajaj auto-rickshaw",
+      "motion_prompt": "the brothers jog, one waves at the bajaj, handheld camera",
+      "seed": 3002,
       "render": {
-        "mode": "wan",
-        "kenburns": "pan_right",
+        "mode": "kenburns",
+        "kenburns": "pan_left",
         "crop_focus_x": 0.5
       },
       "narration": {
-        "text": "TODO narration line 2 in the narration language",
-        "subtitle_en": "TODO: English subtitle for narration line 2.",
-        "offset_s": 0.3
+        "text": "ከወንድሜ ከኤርሚያስ መኮንን ጋር ጊዜን ለመቅደም እንሮጥ ነበር።",
+        "subtitle_en": "My brother Ermias Mekonen and I were racing against the clock.",
+        "offset_s": 0.4
       }
     },
     {
       "id": "s03",
       "duration_s": 7.5,
-      "reason": "TODO: why shot 3 exists, in one sentence",
-      "shot_size": "close_up",
+      "reason": "The rush turns into a shared adventure.",
+      "shot_size": "medium_close_up",
       "characters": [
-        "main_person"
+        "ermias"
       ],
-      "image_prompt": "TODO: what keyframe 3 shows (subject, place, light) — style is added automatically",
-      "motion_prompt": "TODO: motion and camera only, e.g. slow push-in, light wind",
-      "seed": 1003,
+      "image_prompt": "seen from the back seat inside a small blue and white three-wheeled bajaj at night, the young man in the navy jacket laughing as the wind ruffles his jacket, warm shop lights streaking past outside",
+      "motion_prompt": "wind in his jacket, lights streak past, gentle shake",
+      "seed": 3003,
       "render": {
-        "mode": "wan",
+        "mode": "kenburns",
         "kenburns": "push_in",
         "crop_focus_x": 0.5
       },
       "narration": {
-        "text": "TODO narration line 3 in the narration language",
-        "subtitle_en": "TODO: English subtitle for narration line 3.",
-        "offset_s": 0.3
+        "text": "የመጨረሻዋን ባጃጅ ይዘን በከተማዋ መብራቶች መካከል ስንበር፣ ችኮላው ወደ ደስታ ተቀየረ።",
+        "subtitle_en": "Catching the last bajaj through the city lights, the rush turned into pure joy.",
+        "offset_s": 0.4
       }
     },
     {
       "id": "s04",
-      "duration_s": 7.5,
-      "reason": "TODO: why shot 4 exists, in one sentence",
+      "duration_s": 8.0,
+      "reason": "The unexpected detour that leads us somewhere we never planned.",
       "shot_size": "wide",
-      "characters": [],
-      "image_prompt": "TODO: what keyframe 4 shows (subject, place, light) — style is added automatically",
-      "motion_prompt": "TODO: motion and camera only, e.g. slow push-in, light wind",
-      "seed": 1004,
+      "characters": [
+        "ermias",
+        "narrator"
+      ],
+      "image_prompt": "a sudden evening rain on a street in Adama at night, raindrops glittering under amber streetlamps, two brothers running for the lit canvas awning of a small local cafe, wet asphalt reflecting the lights",
+      "motion_prompt": "rain falls, the brothers run under the awning",
+      "seed": 3004,
+      "render": {
+        "mode": "kenburns",
+        "kenburns": "push_in",
+        "crop_focus_x": 0.5
+      },
+      "narration": {
+        "text": "ድንገተኛው የምሽት ዝናብ መንገዳችንን ቢያስቀይረንም፣ ወዳልታሰበ ሞቅ ያለ ቦታ አደረሰን።",
+        "subtitle_en": "A sudden evening rain changed our path, leading us into an unexpected, lively shelter.",
+        "offset_s": 0.4
+      }
+    },
+    {
+      "id": "s05",
+      "duration_s": 8.0,
+      "reason": "Peak playful energy, and the wager that sets up the treat.",
+      "shot_size": "medium",
+      "characters": [
+        "ermias",
+        "narrator"
+      ],
+      "image_prompt": "inside a small, lively cafe at night with steamed-up windows, two brothers at a wooden table playing cards; the young man in the navy jacket grins in triumph as he slaps his winning card down, his brother in the olive-green jacket laughing, blurred people behind them",
+      "motion_prompt": "he slaps the card down, both laugh, static camera",
+      "seed": 3005,
       "render": {
         "mode": "kenburns",
         "kenburns": "pull_out",
         "crop_focus_x": 0.5
       },
       "narration": {
-        "text": "TODO narration line 4 in the narration language",
-        "subtitle_en": "TODO: English subtitle for narration line 4.",
-        "offset_s": 0.3
-      }
-    },
-    {
-      "id": "s05",
-      "duration_s": 7.5,
-      "reason": "TODO: why shot 5 exists, in one sentence",
-      "shot_size": "insert",
-      "characters": [],
-      "image_prompt": "TODO: what keyframe 5 shows (subject, place, light) — style is added automatically",
-      "motion_prompt": "TODO: motion and camera only, e.g. slow push-in, light wind",
-      "seed": 1005,
-      "render": {
-        "mode": "wan",
-        "kenburns": "pan_left",
-        "crop_focus_x": 0.5
-      },
-      "narration": {
-        "text": "TODO narration line 5 in the narration language",
-        "subtitle_en": "TODO: English subtitle for narration line 5.",
-        "offset_s": 0.3
+        "text": "በጨዋታ እና በሳቅ መካከል፣ የቤተሰብ ግብዣ የሚያስከፍል ውርርድ አሸነፈ።",
+        "subtitle_en": "Amidst games and laughter, he won a wager that meant treating the whole family.",
+        "offset_s": 0.4
       }
     },
     {
       "id": "s06",
-      "duration_s": 7.5,
-      "reason": "TODO: why shot 6 exists, in one sentence",
-      "shot_size": "medium_close_up",
+      "duration_s": 8.5,
+      "reason": "The breakthrough news: the turn from play to a real milestone.",
+      "shot_size": "close_up",
       "characters": [
-        "main_person"
+        "ermias"
       ],
-      "image_prompt": "TODO: what keyframe 6 shows (subject, place, light) — style is added automatically",
-      "motion_prompt": "TODO: motion and camera only, e.g. slow push-in, light wind",
-      "seed": 1006,
+      "image_prompt": "close-up across a wooden cafe table at night, the young man in the navy jacket leaning in with shining eyes, telling good news; on the table a round-bottomed black clay coffee pot with a long narrow neck and a spout, small white cups without handles, rising steam",
+      "motion_prompt": "steam rises, he leans in and smiles, slow push-in",
+      "seed": 3006,
       "render": {
-        "mode": "wan",
+        "mode": "kenburns",
         "kenburns": "push_in",
         "crop_focus_x": 0.5
       },
       "narration": {
-        "text": "TODO narration line 6 in the narration language",
-        "subtitle_en": "TODO: English subtitle for narration line 6.",
-        "offset_s": 0.3
+        "text": "በቡና ጭስ መካከል ያልተጠበቀ የምስራች ሲነግረኝ፣ ድንገተኛ ደስታ ዋጠን።",
+        "subtitle_en": "Over steaming coffee, he shared unexpected good news, and joy swept over us.",
+        "offset_s": 0.4
       }
     },
     {
       "id": "s07",
       "duration_s": 7.5,
-      "reason": "TODO: why shot 7 exists, in one sentence",
-      "shot_size": "wide",
-      "characters": [],
-      "image_prompt": "TODO: what keyframe 7 shows (subject, place, light) — style is added automatically",
-      "motion_prompt": "TODO: motion and camera only, e.g. slow push-in, light wind",
-      "seed": 1007,
+      "reason": "The emotional core: pride and brotherhood without words.",
+      "shot_size": "medium_close_up",
+      "characters": [
+        "ermias",
+        "narrator"
+      ],
+      "image_prompt": "two brothers at a cafe table smiling quietly at each other, the brother in the olive-green jacket firmly clasping the shoulder of the young man in the navy jacket, warm golden light on their faces, soft out-of-focus lights behind",
+      "motion_prompt": "a slow shoulder clasp, quiet smiles, very slow push-in",
+      "seed": 3007,
       "render": {
         "mode": "kenburns",
-        "kenburns": "static",
+        "kenburns": "push_in",
         "crop_focus_x": 0.5
       },
       "narration": {
-        "text": "TODO narration line 7 in the narration language",
-        "subtitle_en": "TODO: English subtitle for narration line 7.",
-        "offset_s": 0.3
+        "text": "በዚያች ቅጽበት፣ ምንም ሳንናገር አንዳችን ለአንዳችን ያለንን ኩራት እና ፍቅር ተሰማን።",
+        "subtitle_en": "In that quiet pause, without a word, we felt the pride and bond we share.",
+        "offset_s": 0.4
       }
     },
     {
       "id": "s08",
-      "duration_s": 7.5,
-      "reason": "TODO: why shot 8 exists, in one sentence",
-      "shot_size": "close_up",
+      "duration_s": 7.0,
+      "reason": "Resolution: carrying the night's good news home to the family.",
+      "shot_size": "wide",
       "characters": [
-        "main_person"
+        "ermias",
+        "narrator"
       ],
-      "image_prompt": "TODO: what keyframe 8 shows (subject, place, light) — style is added automatically",
-      "motion_prompt": "TODO: motion and camera only, e.g. slow push-in, light wind",
-      "seed": 1008,
+      "image_prompt": "seen from behind, two brothers walking side by side down a quiet rain-wet palm-lined street in Adama at night, amber streetlamps reflecting on the wet road ahead",
+      "motion_prompt": "they walk away slowly, reflections shimmer, slow pull-out",
+      "seed": 3008,
       "render": {
-        "mode": "wan",
+        "mode": "kenburns",
         "kenburns": "pull_out",
         "crop_focus_x": 0.5
       },
       "narration": {
-        "text": "TODO narration line 8 in the narration language",
-        "subtitle_en": "TODO: English subtitle for narration line 8.",
-        "offset_s": 0.3
+        "text": "ናዝሬት የሰጠችንን ትዝታ እና ጽናት ይዘን ወደ ቤተሰባችን ተመለስን።",
+        "subtitle_en": "Carrying the memories and strength Nazreth gave us, we headed home to family.",
+        "offset_s": 0.4
       }
     }
   ],
   "end_card": {
-    "text": "Made with AI — narration, images, video and music generated by AI models",
+    "text": "Made with AI. Images, narration and music generated by AI models. For my brother Ermias.",
     "duration_s": 4
   }
 }

@@ -6,7 +6,8 @@ zero.** After recording consent, set `characters[].consent.recorded = true` in s
 
 | Person | Relationship | What they agreed to (likeness / voice / their story / these exact words) | How recorded (voice note, message, signed) and where kept | Date |
 |---|---|---|---|---|
-| TODO | | | | |
+| Ermias Mekonen | My brother | His name, his photo used for AI images and kept in the repo, Amharic narration of the story, public posting with an AI label, submission to 10 Academy; can ask for takedown | Telegram voice note, saved privately on my phone (not in the repo) | 2026-11-25 |
+| Me (narrator) | Self | I made the film; self-consent | — | 2026-11-25 |
 
 Did they hear or see the narration lines before release? TODO
 

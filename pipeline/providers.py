@@ -9,6 +9,7 @@ import base64
 import functools
 import io
 import math
+import os
 import struct
 import wave
 
@@ -184,14 +185,62 @@ def cf_image(prompt: str, seed: int, steps: int, model: str, reference_images: l
     return base64.b64decode(image_b64), {"images": 1}
 
 
-def cf_image_flux2(prompt, seed, steps, model, reference_images):
-    """TODO: FLUX.2 klein with reference images (character sheet conditioning).
+REF_MAX_SIDE = 511  # Workers AI: every FLUX.2 input image must be smaller than 512x512
+REF_MAX_COUNT = 4   # input_image_0 … input_image_3
 
-    Check the model page under https://developers.cloudflare.com/workers-ai/models/ for the
-    exact input format (FLUX.2 models take multipart form data with reference images).
-    Return (image_bytes, {"images": 1}) like cf_image(), and raise C.RetryableError on 429/5xx.
-    """
-    raise NotImplementedError("FLUX.2 adapter not written yet — see cf_image_flux2() docstring.")
+
+def reference_png(path: str) -> bytes:
+    """Load a reference image, shrink it to fit inside 511x511 (keeping its shape), return PNG bytes.
+    Crop references to head and shoulders BEFORE adding them: a full-body photo shrunk to 511 px
+    leaves the face only a few dozen pixels wide."""
+    from PIL import Image
+
+    p = C.ROOT / path if not os.path.isabs(path) else path
+    if not os.path.exists(p):
+        raise FileNotFoundError(f"reference image {path} not found")
+    img = Image.open(p).convert("RGB")
+    img.thumbnail((REF_MAX_SIDE, REF_MAX_SIDE), Image.LANCZOS)
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    return buf.getvalue()
+
+
+def cf_image_flux2(prompt, seed, steps, model, reference_images):
+    """FLUX.2 (klein / dev) on Workers AI: multipart form data, even with no images.
+    Reference images go in binary as input_image_0 … input_image_3 (each under 512x512); the prompt
+    can name them as "image 0", "image 1". Reply: JSON with a base64 image in result.image."""
+    import requests
+
+    if len(reference_images) > REF_MAX_COUNT:
+        raise ValueError(f"FLUX.2 takes at most {REF_MAX_COUNT} reference images, got {len(reference_images)}")
+    acct = config.require("CLOUDFLARE_ACCOUNT_ID")
+    token = config.require("CLOUDFLARE_API_TOKEN")
+    url = f"https://api.cloudflare.com/client/v4/accounts/{acct}/ai/run/{model}"
+    fields = {
+        "prompt": (None, prompt),
+        "steps": (None, str(steps)),
+        "width": (None, str(config.CF_IMAGE_WIDTH)),
+        "height": (None, str(config.CF_IMAGE_HEIGHT)),
+    }
+    if config.CF_IMAGE_SEND_SEED:
+        fields["seed"] = (None, str(seed))
+    for i, ref in enumerate(reference_images):
+        fields[f"input_image_{i}"] = (f"reference_{i}.png", reference_png(ref), "image/png")
+    try:
+        r = requests.post(url, headers={"Authorization": f"Bearer {token}"}, files=fields, timeout=180)
+    except requests.RequestException as e:
+        raise C.RetryableError(f"network: {e}") from e
+    if r.status_code in C.RETRY_CODES:
+        raise C.RetryableError(f"Cloudflare HTTP {r.status_code}: {r.text[:300]}")
+    if r.status_code >= 400:
+        raise RuntimeError(f"Cloudflare HTTP {r.status_code}: {r.text[:500]}")
+    if r.headers.get("content-type", "").startswith("image/"):
+        return r.content, {"images": 1, "reference_images": len(reference_images)}
+    payload = r.json()
+    image_b64 = (payload.get("result") or {}).get("image")
+    if not image_b64:
+        raise RuntimeError(f"no image in Cloudflare response: {str(payload)[:300]}")
+    return base64.b64decode(image_b64), {"images": 1, "reference_images": len(reference_images)}
 
 
 # ---------- fake stand-ins (PIPELINE_FAKE=1) ----------

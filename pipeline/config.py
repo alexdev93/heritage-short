@@ -47,6 +47,8 @@ MODELS = {
 }
 
 CF_IMAGE_STEPS = int(env("CF_IMAGE_STEPS", "4"))
+CF_IMAGE_WIDTH = int(env("CF_IMAGE_WIDTH", "1024"))   # FLUX.2 only; FLUX.1 schnell picks its own size
+CF_IMAGE_HEIGHT = int(env("CF_IMAGE_HEIGHT", "1024"))
 # FLUX.1 schnell on Workers AI may not accept a seed; turn this on only if the model's schema lists one.
 CF_IMAGE_SEND_SEED = env("CF_IMAGE_SEND_SEED", "false").lower() == "true"
 
