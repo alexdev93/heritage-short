@@ -92,3 +92,18 @@ Tried: 1) checked the network: Google API reachable in ~1 s  2) read the SDK's r
 Fix: HttpOptions(timeout=120 s, retry_options attempts=1); timeouts/connection errors wrapped as
 RetryableError so with_retries retries them visibly. Tests in tests/test_tts.py.
 Cost: ~15 min.
+
+## F7 — Gemini TTS free tier: 3 requests/minute and 10 requests/day
+Date: 2026-11-25
+Symptom: after cleaning outputs/ and regenerating, `make narration` failed with 429 "limit: 3 requests per
+minute on Free Tier. Please retry in 43s"; the rerun hit "limit: 10 requests per day ... retry in 11h37m56s".
+Evidence: runs.jsonl gemini-3.8-flash-tts rows with status error, 2026-11-25 ~20:20 UTC.
+Cause: free-tier quotas; our retry backoff (2/4/8 s) was shorter than the 43 s the API asked for. Deleting the
+cached narration also spent 6 of the day's 10 requests regenerating lines that already existed.
+Tried: 1) pacing TTS calls 21 s apart  2) waiting as long as "retry in Ns" says  3) stopping at once when the
+wait is hours (daily cap) instead of retrying.
+Fix: config.TTS_MIN_INTERVAL_S (GEMINI_TTS_MIN_INTERVAL_S, default 21); common.retry_after_s() + with_retries
+honours the hint and fails fast with "quota exhausted" over 5 min. Fixed s03/s07 timing by lengthening the
+shots (8.0 s) instead of re-recording, which needs no TTS call. Tests in tests/test_tts.py.
+Lesson: never delete outputs/narration — narration is the scarcest quota (10 lines/day).
+Cost: today's TTS quota; no more narration until ~11:40 tomorrow.

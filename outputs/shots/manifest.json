@@ -1,0 +1,74 @@
+{
+  "s01": {
+    "keyframe": "outputs/keyframes/s01-c32ae754a6ad.png",
+    "kenburns": "pan_right",
+    "crop_focus_x": 0.5,
+    "trim_start_s": 0.0,
+    "source": "kenburns",
+    "path": "outputs/keyframes/s01-c32ae754a6ad.png",
+    "hash": "c32ae754a6ad"
+  },
+  "s02": {
+    "keyframe": "outputs/keyframes/s02-4c99bb9dcc8d.png",
+    "kenburns": "pan_left",
+    "crop_focus_x": 0.5,
+    "trim_start_s": 0.0,
+    "source": "kenburns",
+    "path": "outputs/keyframes/s02-4c99bb9dcc8d.png",
+    "hash": "4c99bb9dcc8d"
+  },
+  "s03": {
+    "keyframe": "outputs/keyframes/s03-f16026ad1c8e.png",
+    "kenburns": "push_in",
+    "crop_focus_x": 0.5,
+    "trim_start_s": 0.0,
+    "source": "kenburns",
+    "path": "outputs/keyframes/s03-f16026ad1c8e.png",
+    "hash": "f16026ad1c8e"
+  },
+  "s04": {
+    "keyframe": "outputs/keyframes/s04-6b1b9abddbd2.png",
+    "kenburns": "push_in",
+    "crop_focus_x": 0.5,
+    "trim_start_s": 0.0,
+    "source": "kenburns",
+    "path": "outputs/keyframes/s04-6b1b9abddbd2.png",
+    "hash": "6b1b9abddbd2"
+  },
+  "s05": {
+    "keyframe": "outputs/keyframes/s05-5c62fe6c1214.png",
+    "kenburns": "pull_out",
+    "crop_focus_x": 0.5,
+    "trim_start_s": 0.0,
+    "source": "kenburns",
+    "path": "outputs/keyframes/s05-5c62fe6c1214.png",
+    "hash": "5c62fe6c1214"
+  },
+  "s06": {
+    "keyframe": "outputs/keyframes/s06-27720f32d9c9.png",
+    "kenburns": "push_in",
+    "crop_focus_x": 0.5,
+    "trim_start_s": 0.0,
+    "source": "kenburns",
+    "path": "outputs/keyframes/s06-27720f32d9c9.png",
+    "hash": "27720f32d9c9"
+  },
+  "s07": {
+    "keyframe": "outputs/keyframes/s07-aa1d2aae7984.png",
+    "kenburns": "push_in",
+    "crop_focus_x": 0.5,
+    "trim_start_s": 0.0,
+    "source": "kenburns",
+    "path": "outputs/keyframes/s07-aa1d2aae7984.png",
+    "hash": "aa1d2aae7984"
+  },
+  "s08": {
+    "keyframe": "outputs/keyframes/s08-dcfb83dfde93.png",
+    "kenburns": "pull_out",
+    "crop_focus_x": 0.5,
+    "trim_start_s": 0.0,
+    "source": "kenburns",
+    "path": "outputs/keyframes/s08-dcfb83dfde93.png",
+    "hash": "dcfb83dfde93"
+  }
+}

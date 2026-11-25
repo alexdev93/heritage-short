@@ -21,3 +21,14 @@
 {"ts": "2026-11-25T20:07:59+00:00", "stage": "narration", "seconds": 0.74}
 {"ts": "2026-11-25T20:08:03+00:00", "stage": "music-build", "seconds": 3.9}
 {"ts": "2026-11-25T20:08:24+00:00", "stage": "assemble-radio", "seconds": 21.53, "draft": false}
+{"ts": "2026-11-25T20:22:51+00:00", "stage": "narration", "seconds": 91.82}
+{"ts": "2026-11-25T20:23:31+00:00", "stage": "narration", "seconds": 1.01}
+{"ts": "2026-11-25T20:25:00+00:00", "stage": "keyframes-build", "seconds": 85.44}
+{"ts": "2026-11-25T20:25:29+00:00", "stage": "narration", "seconds": 0.93}
+{"ts": "2026-11-25T20:25:29+00:00", "stage": "keyframes-build", "seconds": 0.07}
+{"ts": "2026-11-25T20:25:29+00:00", "stage": "shots-build", "seconds": 0.01}
+{"ts": "2026-11-25T20:25:34+00:00", "stage": "music-build", "seconds": 4.34}
+{"ts": "2026-11-25T20:30:07+00:00", "stage": "assemble", "seconds": 273.22, "draft": false}
+{"ts": "2026-11-25T20:30:12+00:00", "stage": "narration", "seconds": 0.77}
+{"ts": "2026-11-25T20:30:12+00:00", "stage": "music-build", "seconds": 0.14}
+{"ts": "2026-11-25T20:30:34+00:00", "stage": "assemble-radio", "seconds": 22.1, "draft": false}

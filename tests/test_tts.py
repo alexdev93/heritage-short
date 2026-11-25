@@ -115,3 +115,18 @@ def test_tts_calls_are_paced(monkeypatch):
     monkeypatch.setattr(providers, "_last_tts_call", [95.0])
     providers._pace_tts()
     assert slept == [16.0]
+
+
+def test_daily_quota_stops_at_once_instead_of_retrying(monkeypatch):
+    """'retry in 11h37m56s' is a daily cap: fail on the first attempt with a clear message (F7)."""
+    import pytest
+    calls = []
+    monkeypatch.setattr(providers.C.time, "sleep", lambda s: None)
+
+    def fn(i):
+        calls.append(i)
+        raise providers.C.RetryableError("429 ... 10 requests per day ... Please retry in 11h37m56s or upgrade")
+    with pytest.raises(RuntimeError, match="quota exhausted"):
+        providers.C.with_retries(fn)
+    assert calls == [1]
+    assert providers.C.retry_after_s("Please retry in 11h37m56s") == 11 * 3600 + 37 * 60 + 56

@@ -215,6 +215,15 @@ def is_retryable(e: BaseException) -> bool:
     return name in {"ConnectionError", "Timeout", "ReadTimeout", "ConnectTimeout", "ServerError"}
 
 
+def retry_after_s(message: str) -> float | None:
+    """Seconds from 'retry in 43s' / 'retry in 11h37m56s' in an error message, or None."""
+    m = re.search(r"retry in ((?:\d+(?:\.\d+)?[hms])+)", message, re.IGNORECASE)
+    if not m:
+        return None
+    unit = {"h": 3600, "m": 60, "s": 1}
+    return sum(float(n) * unit[u.lower()] for n, u in re.findall(r"(\d+(?:\.\d+)?)([hms])", m.group(1), re.IGNORECASE))
+
+
 def with_retries(fn, attempts: int = 4, base: float = 2.0):
     """Call fn(attempt_number). Retries retryable errors with exponential backoff and jitter."""
     for i in range(1, attempts + 1):
@@ -224,9 +233,11 @@ def with_retries(fn, attempts: int = 4, base: float = 2.0):
             if i == attempts or not is_retryable(e):
                 raise
             delay = base ** i + random.uniform(0, 1)
-            hint = re.search(r"retry in (\d+(?:\.\d+)?)\s*s", str(e), re.IGNORECASE)
-            if hint:  # rate limits say how long to wait ("Please retry in 43s", F7)
-                delay = max(delay, float(hint.group(1)) + 1)
+            hint = retry_after_s(str(e))
+            if hint is not None:  # rate limits say how long to wait ("Please retry in 43s", F7)
+                if hint > 300:  # a daily quota ("retry in 11h37m56s"): waiting won't help today
+                    raise RuntimeError(f"quota exhausted, provider says retry in {hint / 3600:.1f} h: {str(e)[:200]}") from e
+                delay = max(delay, hint + 1)
             warn(f"{type(e).__name__}: {str(e)[:120]} — retry {i}/{attempts - 1} in {delay:.1f}s")
             time.sleep(delay)
 
