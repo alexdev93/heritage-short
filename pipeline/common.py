@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 import random
+import re
 import shutil
 import subprocess
 import sys
@@ -223,6 +224,9 @@ def with_retries(fn, attempts: int = 4, base: float = 2.0):
             if i == attempts or not is_retryable(e):
                 raise
             delay = base ** i + random.uniform(0, 1)
+            hint = re.search(r"retry in (\d+(?:\.\d+)?)\s*s", str(e), re.IGNORECASE)
+            if hint:  # rate limits say how long to wait ("Please retry in 43s", F7)
+                delay = max(delay, float(hint.group(1)) + 1)
             warn(f"{type(e).__name__}: {str(e)[:120]} — retry {i}/{attempts - 1} in {delay:.1f}s")
             time.sleep(delay)
 

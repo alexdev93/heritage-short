@@ -30,6 +30,7 @@ def _fake_client(monkeypatch, reply):
     fake = _FakeInteractions(reply)
     monkeypatch.setattr(providers, "_gemini_client", lambda: SimpleNamespace(interactions=fake))
     monkeypatch.setattr(providers.C, "FAKE", False)
+    monkeypatch.setattr(providers.config, "TTS_MIN_INTERVAL_S", 0.0)  # no real waiting in tests
     return fake
 
 
@@ -90,3 +91,27 @@ def test_network_errors_become_retryable():
         pass
     assert isinstance(providers._wrap_gemini_error(ReadTimeout("slow")), providers.C.RetryableError)
     assert not isinstance(providers._wrap_gemini_error(ValueError("bad")), providers.C.RetryableError)
+
+
+def test_retry_waits_as_long_as_the_rate_limit_says(monkeypatch):
+    """429 'Please retry in 43s' must wait ~43 s, not the 2-8 s backoff (FAILURES F7)."""
+    slept, calls = [], []
+    monkeypatch.setattr(providers.C.time, "sleep", slept.append)
+
+    def fn(i):
+        calls.append(i)
+        if i == 1:
+            raise providers.C.RetryableError("Gemini HTTP 429: ... Please retry in 43s or upgrade")
+        return "ok"
+    assert providers.C.with_retries(fn) == "ok"
+    assert calls == [1, 2] and slept[0] >= 44
+
+
+def test_tts_calls_are_paced(monkeypatch):
+    slept = []
+    monkeypatch.setattr(providers.time, "sleep", slept.append)
+    monkeypatch.setattr(providers.time, "monotonic", lambda: 100.0)
+    monkeypatch.setattr(providers.config, "TTS_MIN_INTERVAL_S", 21.0)
+    monkeypatch.setattr(providers, "_last_tts_call", [95.0])
+    providers._pace_tts()
+    assert slept == [16.0]

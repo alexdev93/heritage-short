@@ -60,6 +60,8 @@ TTS_SAMPLE_RATE = 24000  # Gemini TTS returns 16-bit mono PCM at 24 kHz
 # auto: Gemini 3.8 TTS models use the Interactions API, older ones generateContent. Force with
 # GEMINI_TTS_API=interactions or GEMINI_TTS_API=generate_content.
 TTS_API = (env("GEMINI_TTS_API", "auto") or "auto").lower()
+# Free tier: 3 TTS requests per minute, so space calls ~21 s apart. 0 turns pacing off (paid tier).
+TTS_MIN_INTERVAL_S = float(env("GEMINI_TTS_MIN_INTERVAL_S", "21"))
 
 # List-price equivalents for COSTS.md. Fill these in from each provider's pricing page
 # (and note the date you checked). Leave None if there is no public price.

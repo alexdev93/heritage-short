@@ -11,6 +11,7 @@ import io
 import math
 import os
 import struct
+import time
 import wave
 
 from pipeline import common as C
@@ -71,10 +72,23 @@ def uses_interactions_api(model: str) -> bool:
     return "3.8" in model
 
 
+_last_tts_call = [0.0]
+
+
+def _pace_tts() -> None:
+    """Free tier allows 3 TTS requests per minute (F7): keep real calls at least N seconds apart."""
+    wait = _last_tts_call[0] + config.TTS_MIN_INTERVAL_S - time.monotonic()
+    if wait > 0:
+        print(f"  (pacing TTS: waiting {wait:.0f}s for the free-tier rate limit)", flush=True)
+        time.sleep(wait)
+    _last_tts_call[0] = time.monotonic()
+
+
 def gemini_tts(text: str, voice: str, style_instruction: str, model: str) -> tuple[bytes, int, dict]:
     """Returns (16-bit mono PCM, sample_rate, usage)."""
     if C.FAKE:
         return _fake_speech(text), config.TTS_SAMPLE_RATE, {"chars": len(text)}
+    _pace_tts()
     if uses_interactions_api(model):
         return _gemini_tts_interactions(text, voice, style_instruction, model)
     return _gemini_tts_generate_content(text, voice, style_instruction, model)

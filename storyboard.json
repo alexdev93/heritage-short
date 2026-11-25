@@ -30,7 +30,7 @@
     {
       "id": "narrator",
       "real_person": true,
-      "description": "a slim young man in his mid-twenties with a short full beard and curly dark hair, no glasses, wearing an olive-green jacket over a black crew-neck t-shirt",
+      "description": "a slim young man in his mid-twenties with short dark hair and light stubble, no glasses, wearing an olive-green jacket over a black crew-neck t-shirt",
       "consent": {
         "recorded": true,
         "ethics_ref": "ETHICS.md#consent-record (self: I made this film)"
