@@ -17,3 +17,7 @@
 {"ts": "2026-11-25T19:21:31+00:00", "stage": "keyframes-build", "seconds": 6.62}
 {"ts": "2026-11-25T19:31:57+00:00", "stage": "keyframes-build", "seconds": 22.2}
 {"ts": "2026-11-25T19:33:00+00:00", "stage": "keyframes-build", "seconds": 17.86}
+{"ts": "2026-11-25T20:05:42+00:00", "stage": "narration", "seconds": 20.84}
+{"ts": "2026-11-25T20:07:59+00:00", "stage": "narration", "seconds": 0.74}
+{"ts": "2026-11-25T20:08:03+00:00", "stage": "music-build", "seconds": 3.9}
+{"ts": "2026-11-25T20:08:24+00:00", "stage": "assemble-radio", "seconds": 21.53, "draft": false}
