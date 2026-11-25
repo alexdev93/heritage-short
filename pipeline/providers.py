@@ -22,11 +22,13 @@ from pipeline import config
 def _gemini_client():  # mid-request and closes its connection ("client has been closed", F2)
     from google import genai  # imported lazily so fake mode needs no SDK
 
-    return genai.Client(api_key=config.require("GEMINI_API_KEY"))
+    # v1beta: this SDK defaults to v1, which has no TTS fields (speechConfig 400 / TTS model 404, F3)
+    return genai.Client(api_key=config.require("GEMINI_API_KEY"),
+                        http_options=genai.types.HttpOptions(api_version="v1beta"))
 
 
 def _wrap_gemini_error(e: Exception) -> Exception:
-    code = getattr(e, "code", None)
+    code = getattr(e, "code", None) or getattr(e, "status_code", None)
     if code in C.RETRY_CODES:
         return C.RetryableError(f"Gemini HTTP {code}: {e}")
     return e
@@ -50,10 +52,72 @@ def gemini_text(prompt: str, model: str, json_mode: bool = False) -> tuple[str, 
     return resp.text or "", usage
 
 
+def uses_interactions_api(model: str) -> bool:
+    """Gemini 3.8 TTS models take the Interactions API; older TTS models take generateContent."""
+    if config.TTS_API in ("interactions", "generate_content"):
+        return config.TTS_API == "interactions"
+    return "3.8" in model
+
+
 def gemini_tts(text: str, voice: str, style_instruction: str, model: str) -> tuple[bytes, int, dict]:
     """Returns (16-bit mono PCM, sample_rate, usage)."""
     if C.FAKE:
         return _fake_speech(text), config.TTS_SAMPLE_RATE, {"chars": len(text)}
+    if uses_interactions_api(model):
+        return _gemini_tts_interactions(text, voice, style_instruction, model)
+    return _gemini_tts_generate_content(text, voice, style_instruction, model)
+
+
+def _gemini_tts_interactions(text: str, voice: str, style_instruction: str, model: str) -> tuple[bytes, int, dict]:
+    """Gemini 3.8 TTS: the verbatim text, the style as a speech_metadata annotation, the voice in
+    generation_config.speech_config (a list for one speaker). Unary replies are base64 WAV, 24 kHz mono 16-bit."""
+    try:
+        interaction = _gemini_client().interactions.create(
+            model=model,
+            input=[{
+                "type": "user_input",
+                "content": [{
+                    "type": "text",
+                    "text": text,
+                    "annotations": [{"type": "speech_metadata", "style": style_instruction}],
+                }],
+            }],
+            response_format={"type": "audio"},
+            generation_config={"speech_config": [{"voice": voice}]},
+        )
+    except Exception as e:  # noqa: BLE001
+        raise _wrap_gemini_error(e) from e
+    audio = getattr(interaction, "output_audio", None)
+    if audio is None or not getattr(audio, "data", None):
+        raise RuntimeError(f"no audio in the Gemini reply: {str(interaction)[:300]}")
+    raw = audio.data
+    if isinstance(raw, str):
+        raw = base64.b64decode(raw)
+    elif not bytes(raw[:4]) == b"RIFF" and getattr(audio, "mime_type", "") != "audio/l16":
+        try:
+            raw = base64.b64decode(raw, validate=True)
+        except Exception:  # noqa: BLE001 - already raw bytes
+            pass
+    if bytes(raw[:4]) == b"RIFF":
+        pcm, rate = wav_to_pcm(bytes(raw))
+    else:  # audio/l16: headerless PCM
+        pcm, rate = bytes(raw), getattr(audio, "sample_rate", None) or config.TTS_SAMPLE_RATE
+    usage = {"chars": len(text)}
+    u = getattr(interaction, "usage", None)
+    if u is not None and hasattr(u, "model_dump"):
+        usage.update({k: v for k, v in u.model_dump().items() if isinstance(v, int)})
+    return pcm, rate, usage
+
+
+def wav_to_pcm(data: bytes) -> tuple[bytes, int]:
+    with wave.open(io.BytesIO(data)) as w:
+        if w.getnchannels() != 1 or w.getsampwidth() != 2:
+            raise RuntimeError(f"expected 16-bit mono WAV, got {w.getnchannels()} channel(s), {8 * w.getsampwidth()}-bit")
+        return w.readframes(w.getnframes()), w.getframerate()
+
+
+def _gemini_tts_generate_content(text: str, voice: str, style_instruction: str, model: str) -> tuple[bytes, int, dict]:
+    """Older TTS models (2.5, 3.1 preview): generateContent with speechConfig."""
     from google.genai import types
 
     prompt = f"{style_instruction.rstrip(':. ')}:\n{text}"
