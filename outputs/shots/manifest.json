@@ -40,10 +40,9 @@
     "kenburns": "pull_out",
     "crop_focus_x": 0.5,
     "trim_start_s": 0.0,
-    "source": "kenburns",
-    "path": "outputs/keyframes/s05-5c62fe6c1214.png",
-    "hash": "5c62fe6c1214",
-    "fallback": true
+    "source": "clip",
+    "path": "outputs/shots/s05-735ea7be0085.mp4",
+    "hash": "735ea7be0085"
   },
   "s06": {
     "keyframe": "outputs/keyframes/s06-27720f32d9c9.png",
