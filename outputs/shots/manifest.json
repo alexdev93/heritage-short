@@ -9,31 +9,31 @@
     "hash": "c32ae754a6ad"
   },
   "s02": {
-    "keyframe": "outputs/keyframes/s02-4c99bb9dcc8d.png",
+    "keyframe": "outputs/keyframes/s02-dbf18ed76515.png",
     "kenburns": "pan_left",
     "crop_focus_x": 0.5,
     "trim_start_s": 0.0,
     "source": "kenburns",
-    "path": "outputs/keyframes/s02-4c99bb9dcc8d.png",
-    "hash": "4c99bb9dcc8d"
+    "path": "outputs/keyframes/s02-dbf18ed76515.png",
+    "hash": "dbf18ed76515"
   },
   "s03": {
-    "keyframe": "outputs/keyframes/s03-f16026ad1c8e.png",
+    "keyframe": "outputs/keyframes/s03-e38ecd9ee732.png",
     "kenburns": "push_in",
     "crop_focus_x": 0.5,
     "trim_start_s": 0.0,
     "source": "kenburns",
-    "path": "outputs/keyframes/s03-f16026ad1c8e.png",
-    "hash": "f16026ad1c8e"
+    "path": "outputs/keyframes/s03-e38ecd9ee732.png",
+    "hash": "e38ecd9ee732"
   },
   "s04": {
-    "keyframe": "outputs/keyframes/s04-6b1b9abddbd2.png",
+    "keyframe": "outputs/keyframes/s04-af2e8478036c.png",
     "kenburns": "push_in",
     "crop_focus_x": 0.5,
     "trim_start_s": 0.0,
     "source": "kenburns",
-    "path": "outputs/keyframes/s04-6b1b9abddbd2.png",
-    "hash": "6b1b9abddbd2"
+    "path": "outputs/keyframes/s04-af2e8478036c.png",
+    "hash": "af2e8478036c"
   },
   "s05": {
     "keyframe": "outputs/keyframes/s05-5c62fe6c1214.png",
@@ -42,7 +42,8 @@
     "trim_start_s": 0.0,
     "source": "kenburns",
     "path": "outputs/keyframes/s05-5c62fe6c1214.png",
-    "hash": "5c62fe6c1214"
+    "hash": "5c62fe6c1214",
+    "fallback": true
   },
   "s06": {
     "keyframe": "outputs/keyframes/s06-27720f32d9c9.png",
@@ -63,12 +64,12 @@
     "hash": "aa1d2aae7984"
   },
   "s08": {
-    "keyframe": "outputs/keyframes/s08-dcfb83dfde93.png",
+    "keyframe": "outputs/keyframes/s08-cb567c9d9115.png",
     "kenburns": "pull_out",
     "crop_focus_x": 0.5,
     "trim_start_s": 0.0,
     "source": "kenburns",
-    "path": "outputs/keyframes/s08-dcfb83dfde93.png",
-    "hash": "dcfb83dfde93"
+    "path": "outputs/keyframes/s08-cb567c9d9115.png",
+    "hash": "cb567c9d9115"
   }
 }

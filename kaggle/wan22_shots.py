@@ -20,14 +20,16 @@ import uuid
 
 WORK = "/kaggle/working"
 OUT = f"{WORK}/out"
-REPO = f"{WORK}/Wan2.2"
-CKPT = f"{WORK}/Wan2.2-TI2V-5B"
+TEMP = "/kaggle/temp"  # outside the 20 GB /kaggle/working limit; weights are 34 GB
+REPO = f"{TEMP}/Wan2.2"
+CKPT = f"{TEMP}/Wan2.2-TI2V-5B"
 SAMPLE_STEPS = int(os.environ.get("WAN_STEPS", "40"))  # fewer steps = faster drafts
 
 jobs_path = glob.glob("/kaggle/input/**/jobs.json", recursive=True)[0]
 job_dir = os.path.dirname(jobs_path)
 jobs = json.load(open(jobs_path))
 os.makedirs(OUT, exist_ok=True)
+os.makedirs(TEMP, exist_ok=True)
 log_path = f"{OUT}/runs_kaggle.jsonl"
 
 
@@ -42,7 +44,13 @@ if not os.path.isdir(REPO):
     sh([sys.executable, "-m", "pip", "install", "-q", *reqs], check=True)  # flash_attn usually fails to build here
 if not os.path.isdir(CKPT):
     sh([sys.executable, "-m", "pip", "install", "-q", "huggingface_hub[cli]"], check=True)
-    sh(["huggingface-cli", "download", "Wan-AI/Wan2.2-TI2V-5B", "--local-dir", CKPT], check=True)
+    sh([sys.executable, "-c", f"from huggingface_hub import snapshot_download; snapshot_download('Wan-AI/Wan2.2-TI2V-5B', local_dir='{CKPT}')"], check=True)
+
+# T4 has no flash-attn support: use wan.modules.attention.attention (falls back to torch SDPA)
+model_py = f"{REPO}/wan/modules/model.py"
+src = open(model_py).read()
+if "import attention as flash_attention" not in src:
+    open(model_py, "w").write(src.replace("from .attention import flash_attention", "from .attention import attention as flash_attention"))
 
 for job in jobs:
     dest = f"{OUT}/{job['shot_id']}-{job['clip_key']}.mp4"

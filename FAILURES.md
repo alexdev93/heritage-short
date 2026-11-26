@@ -107,3 +107,19 @@ honours the hint and fails fast with "quota exhausted" over 5 min. Fixed s03/s07
 shots (8.0 s) instead of re-recording, which needs no TTS call. Tests in tests/test_tts.py.
 Lesson: never delete outputs/narration — narration is the scarcest quota (10 lines/day).
 Cost: today's TTS quota; no more narration until ~11:40 tomorrow.
+
+## F8 — Wan 2.2 on Kaggle: 12 h queue, 34 GB weights, removed CLI, no flash-attn on T4
+Date: 2026-11-26
+Symptom: Version #1 of the Kaggle notebook (GPU T4 x2) sat in the free GPU queue for 12 h without starting;
+a live session was at queue position 682. Getting the script ready to run surfaced three more problems:
+1) Wan2.2-TI2V-5B weights are 34.2 GB but /kaggle/working is limited to 20 GB.
+2) `huggingface-cli download` no longer exists (removed in huggingface_hub 1.0).
+3) Wan2.2's model.py imports flash_attention, which asserts flash-attn is installed; flash-attn can't run on a T4.
+Evidence: notebook alemayehumekonen93/notebook076d97859d, Version #1 (cancelled, no output, 0 GPU h used).
+Cause: free-tier GPU demand; script written against older huggingface_hub and for Ampere+ GPUs.
+Tried: 1) cancelled Version #1, queued Version #2 (Save & Run All)  2) patched kaggle/wan22_shots.py.
+Fix: REPO/CKPT under /kaggle/temp (outside the 20 GB limit); weights via huggingface_hub.snapshot_download;
+model.py patched to `from .attention import attention as flash_attention` (torch SDPA fallback).
+Still open: Version #2 queued; risk of GPU out-of-memory at 1280*704, 121 frames on a 16 GB T4.
+Fallback: s05 renders as Ken Burns (pull_out) if no clip comes back.
+Cost: ~12 h waiting (no GPU quota used).

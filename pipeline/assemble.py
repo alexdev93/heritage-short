@@ -14,6 +14,8 @@ Usage: python -m pipeline.assemble [--radio] [--draft] [--aspect 9x16|16x9|both]
 from __future__ import annotations
 
 import argparse
+import json
+import subprocess
 import textwrap
 from pathlib import Path
 
@@ -52,9 +54,23 @@ def mix(voice: Path, music: str, volume_db: float, total: float, out: Path) -> N
           f"volume={volume_db}dB,afade=t=in:st=0:d=1.5,afade=t=out:st={fade_out:.2f}:d=2.5[m];"
           "[0:a]aformat=sample_rates=48000:channel_layouts=stereo,asplit=2[v1][v2];"
           f"[m][v1]sidechaincompress={DUCK}[duck];"
-          f"[duck][v2]amix=inputs=2:normalize=0,{LOUDNORM},atrim=0:{total:.3f}[out]")
+          f"[duck][v2]amix=inputs=2:normalize=0,atrim=0:{total:.3f}[out]")
+    pre = out.with_name(out.stem + ".premix.wav")
     C.ffmpeg("-i", str(voice), "-stream_loop", "-1", "-i", music, "-filter_complex", fc,
-             "-map", "[out]", "-ar", "48000", "-t", f"{total:.3f}", str(out))
+             "-map", "[out]", "-ar", "48000", "-t", f"{total:.3f}", str(pre))
+    loudnorm_two_pass(pre, out, total)
+    pre.unlink(missing_ok=True)
+
+
+def loudnorm_two_pass(src: Path, out: Path, total: float) -> None:
+    """Pass 1 measures the mix, pass 2 applies loudnorm with those numbers (linear) so the result lands on
+    -14 LUFS; single-pass loudnorm only estimates and came out ~1 LU low (-15.2 LUFS)."""
+    r = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", str(src), "-af", LOUDNORM + ":print_format=json",
+                        "-f", "null", "-"], capture_output=True, text=True)
+    m = json.loads(r.stderr[r.stderr.rindex("{"):r.stderr.rindex("}") + 1])
+    measured = (f"measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}:"
+                f"measured_thresh={m['input_thresh']}:offset={m['target_offset']}:linear=true")
+    C.ffmpeg("-i", str(src), "-af", f"{LOUDNORM}:{measured}", "-ar", "48000", "-t", f"{total:.3f}", str(out))
 
 
 # ---------- subtitles ----------

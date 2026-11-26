@@ -96,11 +96,8 @@
       "duration_s": 7.5,
       "reason": "Introduces Ermias and me, and the urgency of the last-minute catch.",
       "shot_size": "medium",
-      "characters": [
-        "ermias",
-        "narrator"
-      ],
-      "image_prompt": "two brothers jogging along a busy sidewalk at dusk; the young man in the navy jacket glances at his wristwatch while his brother in the olive-green jacket raises a hand to stop a small blue and white three-wheeled bajaj auto-rickshaw",
+      "characters": [],
+      "image_prompt": "wide full-body shot of two young men side by side, both clearly in frame, jogging along a busy sidewalk at dusk; the one in the navy jacket glances at his wristwatch while the one in the olive-green jacket raises a hand to stop a small blue and white three-wheeled bajaj auto-rickshaw at the curb",
       "motion_prompt": "the brothers jog, one waves at the bajaj, handheld camera",
       "seed": 3002,
       "render": {
@@ -119,10 +116,8 @@
       "duration_s": 8.0,
       "reason": "The rush turns into a shared adventure.",
       "shot_size": "medium_close_up",
-      "characters": [
-        "ermias"
-      ],
-      "image_prompt": "seen from the back seat inside a small blue and white three-wheeled bajaj at night, the young man in the navy jacket laughing as the wind ruffles his jacket, warm shop lights streaking past outside",
+      "characters": [],
+      "image_prompt": "interior of a small blue and white three-wheeled bajaj auto-rickshaw at night, view from the back seat over the passenger's shoulder: a slim young man in a dark navy jacket, seen from behind and in profile, laughing as the wind ruffles his jacket, the driver's back and handlebars ahead, warm shop lights streaking past the open sides",
       "motion_prompt": "wind in his jacket, lights streak past, gentle shake",
       "seed": 3003,
       "render": {
@@ -141,11 +136,8 @@
       "duration_s": 8.0,
       "reason": "The unexpected detour that leads us somewhere we never planned.",
       "shot_size": "wide",
-      "characters": [
-        "ermias",
-        "narrator"
-      ],
-      "image_prompt": "a sudden evening rain on a street in Adama at night, raindrops glittering under amber streetlamps, two brothers running for the lit canvas awning of a small local cafe, wet asphalt reflecting the lights",
+      "characters": [],
+      "image_prompt": "heavy rain pouring down, visible rain streaks and splashing puddles, on a street in Adama at night; wide full-body shot of two young men running side by side toward the lit canvas awning of a small local cafe, one in a navy jacket and one in an olive-green jacket, wet asphalt reflecting amber streetlamps",
       "motion_prompt": "rain falls, the brothers run under the awning",
       "seed": 3004,
       "render": {
@@ -232,11 +224,8 @@
       "duration_s": 7.0,
       "reason": "Resolution: carrying the night's good news home to the family.",
       "shot_size": "wide",
-      "characters": [
-        "ermias",
-        "narrator"
-      ],
-      "image_prompt": "seen from behind, two brothers walking side by side down a quiet rain-wet palm-lined street in Adama at night, amber streetlamps reflecting on the wet road ahead",
+      "characters": [],
+      "image_prompt": "two young men seen from behind, backs to the camera, walking side by side away from us down a quiet rain-wet palm-lined street in Adama at night, one in a dark navy jacket and one in an olive-green jacket, faces not visible, amber streetlamps reflecting on the wet road ahead",
       "motion_prompt": "they walk away slowly, reflections shimmer, slow pull-out",
       "seed": 3008,
       "render": {
