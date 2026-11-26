@@ -53,7 +53,10 @@ def sh(cmd, **kw):
 
 if not os.path.isdir(REPO):
     sh(["git", "clone", "--depth", "1", "https://github.com/Wan-Video/Wan2.2.git", REPO], check=True)
-    reqs = [l for l in open(f"{REPO}/requirements.txt").read().splitlines() if l and "flash_attn" not in l]
+    # Skip flash_attn (won't build on T4) and Wan's numpy<2 pin: Kaggle's preinstalled jax/transformers
+    # need numpy 2 (numpy.dtypes.StringDType), and downgrading broke every generate.py import.
+    reqs = [l for l in open(f"{REPO}/requirements.txt").read().splitlines()
+            if l and "flash_attn" not in l and not l.startswith("numpy")]
     sh([sys.executable, "-m", "pip", "install", "-q", *reqs], check=True)  # flash_attn usually fails to build here
 if not os.path.isdir(CKPT):
     sh([sys.executable, "-m", "pip", "install", "-q", "huggingface_hub[cli]"], check=True)
