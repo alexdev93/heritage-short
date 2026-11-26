@@ -13,6 +13,7 @@ import datetime
 import glob
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -58,6 +59,14 @@ if not os.path.isdir(REPO):
     reqs = [l for l in open(f"{REPO}/requirements.txt").read().splitlines()
             if l and "flash_attn" not in l and not l.startswith("numpy")]
     sh([sys.executable, "-m", "pip", "install", "-q", *reqs], check=True)  # flash_attn usually fails to build here
+# wan/__init__.py imports the speech-to-video and Animate pipelines unconditionally; they need decord, librosa,
+# whisper, peft... (requirements_s2v/animate.txt), which we don't use for TI2V. Make those two imports optional.
+_init = f"{REPO}/wan/__init__.py"
+_src = open(_init).read()
+for _line in ("from .speech2video import WanS2V", "from .animate import WanAnimate"):
+    # ^...$ only matches the unindented original, so re-running the script doesn't wrap it twice
+    _src = re.sub(rf"^{re.escape(_line)}$", f"try:\n    {_line}\nexcept ImportError:\n    pass", _src, flags=re.M)
+open(_init, "w").write(_src)
 if not os.path.isdir(CKPT):
     sh([sys.executable, "-m", "pip", "install", "-q", "huggingface_hub[cli]"], check=True)
     sh([sys.executable, "-c", f"from huggingface_hub import snapshot_download; snapshot_download('Wan-AI/Wan2.2-TI2V-5B', local_dir='{CKPT}')"], check=True)
