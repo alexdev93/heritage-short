@@ -2,41 +2,41 @@
   "s01": {
     "path": "outputs/narration/s01-d427006f642e.wav",
     "hash": "d427006f642e",
-    "duration_s": 3.92
+    "duration_s": 4.07
   },
   "s02": {
     "path": "outputs/narration/s02-9537a9e27d45.wav",
     "hash": "9537a9e27d45",
-    "duration_s": 5.25
+    "duration_s": 4.63
   },
   "s03": {
     "path": "outputs/narration/s03-6125464ca510.wav",
     "hash": "6125464ca510",
-    "duration_s": 7.11
+    "duration_s": 6.34
   },
   "s04": {
     "path": "outputs/narration/s04-304954380c69.wav",
     "hash": "304954380c69",
-    "duration_s": 6.22
+    "duration_s": 6.67
   },
   "s05": {
     "path": "outputs/narration/s05-2e788ca6f7d2.wav",
     "hash": "2e788ca6f7d2",
-    "duration_s": 5.44
+    "duration_s": 5.63
   },
   "s06": {
     "path": "outputs/narration/s06-185214b2d6f1.wav",
     "hash": "185214b2d6f1",
-    "duration_s": 5.85
+    "duration_s": 5.98
   },
   "s07": {
     "path": "outputs/narration/s07-a422485e61d8.wav",
     "hash": "a422485e61d8",
-    "duration_s": 6.97
+    "duration_s": 7.2
   },
   "s08": {
     "path": "outputs/narration/s08-3d387e5aceae.wav",
     "hash": "3d387e5aceae",
-    "duration_s": 4.87
+    "duration_s": 4.57
   }
 }

@@ -29,6 +29,19 @@ jobs_path = glob.glob("/kaggle/input/**/jobs.json", recursive=True)[0]
 job_dir = os.path.dirname(jobs_path)
 jobs = json.load(open(jobs_path))
 os.makedirs(OUT, exist_ok=True)
+
+
+def find_image(rel):
+    """The keyframe next to jobs.json, or (if the dataset was uploaded flat) the same file name anywhere in it."""
+    path = os.path.join(job_dir, rel)
+    if os.path.exists(path):
+        return path
+    hits = glob.glob(f"/kaggle/input/**/{os.path.basename(rel)}", recursive=True)
+    if not hits:
+        raise FileNotFoundError(rel)
+    return hits[0]
+
+
 os.makedirs(TEMP, exist_ok=True)
 log_path = f"{OUT}/runs_kaggle.jsonl"
 
@@ -59,7 +72,7 @@ for job in jobs:
         continue
     cmd = [sys.executable, "generate.py", "--task", "ti2v-5B", "--size", job["size"], "--ckpt_dir", CKPT,
            "--offload_model", "True", "--convert_model_dtype", "--t5_cpu",
-           "--image", os.path.join(job_dir, job["image"]), "--prompt", job["prompt"],
+           "--image", find_image(job["image"]), "--prompt", job["prompt"],
            "--base_seed", str(job["seed"]), "--frame_num", str(job["frame_num"]),
            "--sample_steps", str(SAMPLE_STEPS), "--save_file", dest]
     t0 = time.perf_counter()

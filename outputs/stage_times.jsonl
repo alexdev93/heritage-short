@@ -65,3 +65,14 @@
 {"ts": "2026-11-26T13:22:28+00:00", "stage": "shots-build", "seconds": 0.01}
 {"ts": "2026-11-26T13:22:28+00:00", "stage": "music-build", "seconds": 0.08}
 {"ts": "2026-11-26T13:28:11+00:00", "stage": "assemble", "seconds": 343.25, "draft": false}
+{"ts": "2026-11-26T15:02:38+00:00", "stage": "narration", "seconds": 153.23}
+{"ts": "2026-11-26T15:02:46+00:00", "stage": "narration", "seconds": 0.85}
+{"ts": "2026-11-26T15:02:46+00:00", "stage": "keyframes-build", "seconds": 0.02}
+{"ts": "2026-11-26T15:02:46+00:00", "stage": "shots-build", "seconds": 0.01}
+{"ts": "2026-11-26T15:02:50+00:00", "stage": "music-build", "seconds": 4.09}
+{"ts": "2026-11-26T15:08:08+00:00", "stage": "assemble", "seconds": 318.6, "draft": false}
+{"ts": "2026-11-26T15:08:19+00:00", "stage": "narration", "seconds": 0.84}
+{"ts": "2026-11-26T15:08:19+00:00", "stage": "music-build", "seconds": 0.11}
+{"ts": "2026-11-26T15:08:52+00:00", "stage": "assemble-radio", "seconds": 33.39, "draft": false}
+{"ts": "2026-11-26T15:08:53+00:00", "stage": "shots-export", "seconds": 0.16}
+{"ts": "2026-11-26T15:08:53+00:00", "stage": "music-export", "seconds": 0.14}

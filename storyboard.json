@@ -81,7 +81,7 @@
       "motion_prompt": "traffic moves slowly, streetlights flicker on, slow pan right",
       "seed": 3001,
       "render": {
-        "mode": "kenburns",
+        "mode": "wan",
         "kenburns": "pan_right",
         "crop_focus_x": 0.5
       },
@@ -101,7 +101,7 @@
       "motion_prompt": "the brothers jog, one waves at the bajaj, handheld camera",
       "seed": 3002,
       "render": {
-        "mode": "kenburns",
+        "mode": "wan",
         "kenburns": "pan_left",
         "crop_focus_x": 0.5
       },
@@ -121,7 +121,7 @@
       "motion_prompt": "wind in his jacket, lights streak past, gentle shake",
       "seed": 3003,
       "render": {
-        "mode": "kenburns",
+        "mode": "wan",
         "kenburns": "push_in",
         "crop_focus_x": 0.5
       },
@@ -141,7 +141,7 @@
       "motion_prompt": "rain falls, the brothers run under the awning",
       "seed": 3004,
       "render": {
-        "mode": "kenburns",
+        "mode": "wan",
         "kenburns": "push_in",
         "crop_focus_x": 0.5
       },
@@ -186,7 +186,7 @@
       "motion_prompt": "steam rises, he leans in and smiles, slow push-in",
       "seed": 3006,
       "render": {
-        "mode": "kenburns",
+        "mode": "wan",
         "kenburns": "push_in",
         "crop_focus_x": 0.5
       },
@@ -209,7 +209,7 @@
       "motion_prompt": "a slow shoulder clasp, quiet smiles, very slow push-in",
       "seed": 3007,
       "render": {
-        "mode": "kenburns",
+        "mode": "wan",
         "kenburns": "push_in",
         "crop_focus_x": 0.5
       },
@@ -229,7 +229,7 @@
       "motion_prompt": "they walk away slowly, reflections shimmer, slow pull-out",
       "seed": 3008,
       "render": {
-        "mode": "kenburns",
+        "mode": "wan",
         "kenburns": "pull_out",
         "crop_focus_x": 0.5
       },

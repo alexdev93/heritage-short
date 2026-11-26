@@ -6,7 +6,8 @@
     "trim_start_s": 0.0,
     "source": "kenburns",
     "path": "outputs/keyframes/s01-c32ae754a6ad.png",
-    "hash": "c32ae754a6ad"
+    "hash": "c32ae754a6ad",
+    "fallback": true
   },
   "s02": {
     "keyframe": "outputs/keyframes/s02-dbf18ed76515.png",
@@ -15,7 +16,8 @@
     "trim_start_s": 0.0,
     "source": "kenburns",
     "path": "outputs/keyframes/s02-dbf18ed76515.png",
-    "hash": "dbf18ed76515"
+    "hash": "dbf18ed76515",
+    "fallback": true
   },
   "s03": {
     "keyframe": "outputs/keyframes/s03-e38ecd9ee732.png",
@@ -24,7 +26,8 @@
     "trim_start_s": 0.0,
     "source": "kenburns",
     "path": "outputs/keyframes/s03-e38ecd9ee732.png",
-    "hash": "e38ecd9ee732"
+    "hash": "e38ecd9ee732",
+    "fallback": true
   },
   "s04": {
     "keyframe": "outputs/keyframes/s04-af2e8478036c.png",
@@ -33,16 +36,18 @@
     "trim_start_s": 0.0,
     "source": "kenburns",
     "path": "outputs/keyframes/s04-af2e8478036c.png",
-    "hash": "af2e8478036c"
+    "hash": "af2e8478036c",
+    "fallback": true
   },
   "s05": {
     "keyframe": "outputs/keyframes/s05-5c62fe6c1214.png",
     "kenburns": "pull_out",
     "crop_focus_x": 0.5,
     "trim_start_s": 0.0,
-    "source": "clip",
-    "path": "outputs/shots/s05-735ea7be0085.mp4",
-    "hash": "735ea7be0085"
+    "source": "kenburns",
+    "path": "outputs/keyframes/s05-5c62fe6c1214.png",
+    "hash": "5c62fe6c1214",
+    "fallback": true
   },
   "s06": {
     "keyframe": "outputs/keyframes/s06-27720f32d9c9.png",
@@ -51,7 +56,8 @@
     "trim_start_s": 0.0,
     "source": "kenburns",
     "path": "outputs/keyframes/s06-27720f32d9c9.png",
-    "hash": "27720f32d9c9"
+    "hash": "27720f32d9c9",
+    "fallback": true
   },
   "s07": {
     "keyframe": "outputs/keyframes/s07-aa1d2aae7984.png",
@@ -60,7 +66,8 @@
     "trim_start_s": 0.0,
     "source": "kenburns",
     "path": "outputs/keyframes/s07-aa1d2aae7984.png",
-    "hash": "aa1d2aae7984"
+    "hash": "aa1d2aae7984",
+    "fallback": true
   },
   "s08": {
     "keyframe": "outputs/keyframes/s08-cb567c9d9115.png",
@@ -69,6 +76,7 @@
     "trim_start_s": 0.0,
     "source": "kenburns",
     "path": "outputs/keyframes/s08-cb567c9d9115.png",
-    "hash": "cb567c9d9115"
+    "hash": "cb567c9d9115",
+    "fallback": true
   }
 }

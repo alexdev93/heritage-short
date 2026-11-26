@@ -4,14 +4,18 @@ Notebook: GPU on, Internet on, the music export folder added as a dataset (or up
 Output: /kaggle/working/music_out/cand_<seed>.wav + runs_kaggle.jsonl
         -> download and run `make music-import DIR=<that folder>`
 
-TODO before the first run: fill in setup() and generate_one() from the ACE-Step 1.5 README (install command,
-how to pass caption, lyrics or the instrumental tag, duration, bpm, key and seed). Keep tempo and key in their
-own fields, not in the caption. The timing and logging around it are already done.
+ACE-Step 1.5 is installed with its own `uv sync` environment (torch 2.10 / CUDA 12.8, which still supports the T4),
+so it cannot clash with Kaggle's preinstalled packages. Each candidate runs `uv run python` on a small helper.
+We run the 2B turbo DiT only (no 5Hz language model, thinking=False): our caption, bpm and key are used exactly
+as written instead of being rewritten by the LM, and it fits easily in one 16 GB T4 (float16, T4 has no bf16).
+API: docs/en/INFERENCE.md in github.com/ace-step/ACE-Step-1.5 (AceStepHandler + GenerationParams + generate_music).
 """
 import datetime
 import glob
 import json
 import os
+import shutil
+import subprocess
 import time
 import uuid
 
@@ -22,14 +26,48 @@ os.makedirs(OUT, exist_ok=True)
 log_path = f"{OUT}/runs_kaggle.jsonl"
 
 
+ACE_DIR = "/kaggle/temp/ACE-Step-1.5" if os.path.isdir("/kaggle") else "/content/ACE-Step-1.5"
+UV = os.path.expanduser("~/.local/bin/uv")
+HELPER = f"{OUT}/_ace_one.py"
+
+HELPER_SRC = r"""
+import json, os, shutil, sys
+from acestep.handler import AceStepHandler
+from acestep.inference import GenerationParams, GenerationConfig, generate_music
+a = json.loads(sys.argv[1])
+dit = AceStepHandler()
+msg, ok = dit.initialize_service(project_root=a["root"], config_path="acestep-v15-turbo", device="cuda")
+if not ok:
+    sys.exit("initialize_service failed: " + str(msg))
+params = GenerationParams(
+    caption=a["caption"], lyrics="[Instrumental]" if a["instrumental"] else (a["lyrics"] or ""),
+    instrumental=a["instrumental"], bpm=a["bpm"], keyscale=a["key"], duration=float(a["duration_s"]),
+    seed=a["seed"], thinking=False, use_cot_metas=False, use_cot_caption=False, use_cot_language=False)
+config = GenerationConfig(batch_size=1, use_random_seed=False, seeds=[a["seed"]], audio_format="wav")
+result = generate_music(dit, None, params, config, save_dir=os.path.dirname(a["dest"]) + "/_tmp")
+if not result.success:
+    sys.exit("generate_music failed: " + str(result.error))
+shutil.move(result.audios[0]["path"], a["dest"])
+"""
+
+
 def setup():
-    """TODO: install ACE-Step 1.5 and download its weights (see its README)."""
-    raise NotImplementedError("fill in setup() from the ACE-Step 1.5 README")
+    """Install uv, clone ACE-Step 1.5 and `uv sync` its pinned environment. Weights download on first use."""
+    if not os.path.exists(UV):
+        subprocess.run("curl -LsSf https://astral.sh/uv/install.sh | sh", shell=True, check=True)
+    if not os.path.isdir(ACE_DIR):
+        subprocess.run(["git", "clone", "--depth", "1", "https://github.com/ACE-Step/ACE-Step-1.5.git", ACE_DIR], check=True)
+    subprocess.run([UV, "sync"], cwd=ACE_DIR, check=True)
+    with open(HELPER, "w") as f:
+        f.write(HELPER_SRC)
 
 
 def generate_one(caption, lyrics, instrumental, duration_s, bpm, key, seed, dest):
-    """TODO: generate one track and save it to dest (a .wav path)."""
-    raise NotImplementedError("fill in generate_one() from the ACE-Step 1.5 README")
+    """One candidate per seed. Tempo and key go in their own fields, not in the caption."""
+    args = {"root": ACE_DIR, "caption": caption, "lyrics": lyrics, "instrumental": instrumental,
+            "duration_s": duration_s, "bpm": bpm, "key": key, "seed": seed, "dest": dest}
+    subprocess.run([UV, "run", "python", HELPER, json.dumps(args)], cwd=ACE_DIR, check=True)
+    shutil.rmtree(f"{OUT}/_tmp", ignore_errors=True)
 
 
 setup()
