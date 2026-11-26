@@ -54,7 +54,9 @@ shutil.move(result.audios[0]["path"], a["dest"])
 def setup():
     """Install uv, clone ACE-Step 1.5 and `uv sync` its pinned environment. Weights download on first use."""
     if not os.path.exists(UV):
-        subprocess.run("curl -LsSf https://astral.sh/uv/install.sh | sh", shell=True, check=True)
+        # As root (Kaggle) the installer defaults to /usr/local/bin; pin it to where UV points.
+        subprocess.run("curl -LsSf https://astral.sh/uv/install.sh | sh", shell=True, check=True,
+                       env={**os.environ, "UV_INSTALL_DIR": os.path.dirname(UV)})
     if not os.path.isdir(ACE_DIR):
         subprocess.run(["git", "clone", "--depth", "1", "https://github.com/ACE-Step/ACE-Step-1.5.git", ACE_DIR], check=True)
     subprocess.run([UV, "sync"], cwd=ACE_DIR, check=True)
@@ -66,7 +68,9 @@ def generate_one(caption, lyrics, instrumental, duration_s, bpm, key, seed, dest
     """One candidate per seed. Tempo and key go in their own fields, not in the caption."""
     args = {"root": ACE_DIR, "caption": caption, "lyrics": lyrics, "instrumental": instrumental,
             "duration_s": duration_s, "bpm": bpm, "key": key, "seed": seed, "dest": dest}
-    subprocess.run([UV, "run", "python", HELPER, json.dumps(args)], cwd=ACE_DIR, check=True)
+    # Jupyter sets MPLBACKEND to its inline backend, which ACE-Step's own venv can't import.
+    subprocess.run([UV, "run", "python", HELPER, json.dumps(args)], cwd=ACE_DIR, check=True,
+                   env={**os.environ, "MPLBACKEND": "Agg"})
     shutil.rmtree(f"{OUT}/_tmp", ignore_errors=True)
 
 

@@ -123,3 +123,26 @@ model.py patched to `from .attention import attention as flash_attention` (torch
 Still open: Version #2 queued; risk of GPU out-of-memory at 1280*704, 121 frames on a 16 GB T4.
 Fallback: s05 renders as Ken Burns (pull_out) if no clip comes back.
 Cost: ~12 h waiting (no GPU quota used).
+
+## F9 — ACE-Step on Kaggle: uv installed to /usr/local/bin, script looked in ~/.local/bin
+Date: 2026-11-26
+Symptom: FileNotFoundError: [Errno 2] No such file or directory: '/root/.local/bin/uv' at
+acestep_music.py:60 (`uv sync`), right after the ACE-Step-1.5 clone. No music generated.
+Evidence: notebook byteforge46/heritage-music (interactive session), cell output traceback.
+Cause: on Kaggle the job runs as root, and the uv installer put the binary in /usr/local/bin
+(its own output said "installing to /usr/local/bin"); the script hardcoded UV = ~/.local/bin/uv.
+Tried: 1) first run on GPU T4 x2 (T4 x1 and P100 were not offered in the accelerator list).
+Fix or workaround: (pending) install uv with UV_INSTALL_DIR=$HOME/.local/bin so it lands where the
+script looks; re-upload acestep_music.py as a new heritage-acestep-music dataset version and re-run.
+Cost: ~3 min GPU quota; interactive session left idle on the T4 until stopped.
+
+## F10 — Kaggle setup snags: accelerator choices and notebook name clash
+Date: 2026-11-26
+Symptom: 1) Accelerator list showed only None / GPU T4 x2 / TPU v5e-8, so the planned "GPU T4 x1"
+(music) and the "GPU P100" fallback weren't available. 2) Renaming the Wan notebook to
+"heritage-wan-shots" failed: "The requested title ... is already in use by a dataset."
+Evidence: Kaggle notebook editor, Session options and title bar (byteforge46).
+Cause: Kaggle's current accelerator offering; notebook and dataset slugs share a namespace per account.
+Tried: 1) used GPU T4 x2 for both notebooks  2) renamed the notebook to heritage-wan-shots-nb.
+Fix or workaround: both of the above. Wan Version 1 (Save & Run All) started running on T4 x2.
+Cost: a few minutes; T4 x2 uses the same 30 h/week GPU quota.
