@@ -129,6 +129,7 @@ Date: 2026-11-26
 Symptom: FileNotFoundError: [Errno 2] No such file or directory: '/root/.local/bin/uv' at
 acestep_music.py:60 (`uv sync`), right after the ACE-Step-1.5 clone. No music generated.
 Evidence: notebook byteforge46/heritage-music (interactive session), cell output traceback.
+Successful re-run saved in kaggle/logs/heritage-music.ipynb (seeds 100–102 ok).
 Cause: on Kaggle the job runs as root, and the uv installer put the binary in /usr/local/bin
 (its own output said "installing to /usr/local/bin"); the script hardcoded UV = ~/.local/bin/uv.
 Tried: 1) first run on GPU T4 x2 (T4 x1 and P100 were not offered in the accelerator list).
