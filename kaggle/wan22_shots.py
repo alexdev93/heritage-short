@@ -71,6 +71,13 @@ if not os.path.isdir(CKPT):
     sh([sys.executable, "-m", "pip", "install", "-q", "huggingface_hub[cli]"], check=True)
     sh([sys.executable, "-c", f"from huggingface_hub import snapshot_download; snapshot_download('Wan-AI/Wan2.2-TI2V-5B', local_dir='{CKPT}')"], check=True)
 
+# TI2V-5B officially lists only 1280*704 / 704*1280, which runs out of memory on a 16 GB T4 (FAILURES F11).
+# 832*480 is a valid 480p size in Wan's SIZE_CONFIGS/MAX_AREA_CONFIGS; allow it for ti2v-5B too.
+cfg_py = f"{REPO}/wan/configs/__init__.py"
+src = open(cfg_py).read()
+if "# kaggle-480p" not in src:
+    open(cfg_py, "a").write("\nSUPPORTED_SIZES['ti2v-5B'] = tuple(SUPPORTED_SIZES['ti2v-5B']) + ('832*480', '480*832')  # kaggle-480p\n")
+
 # T4 has no flash-attn support: use wan.modules.attention.attention (falls back to torch SDPA)
 model_py = f"{REPO}/wan/modules/model.py"
 src = open(model_py).read()

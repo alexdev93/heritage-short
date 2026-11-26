@@ -1,6 +1,6 @@
 {
-  "path": "outputs/music/placeholder-66s.wav",
-  "source": "placeholder",
-  "hash": "02acd3487d65",
+  "path": "outputs/music/candidates/cand_101.wav",
+  "source": "chosen",
+  "hash": "8afa1107bb7a",
   "volume_db": -8
 }

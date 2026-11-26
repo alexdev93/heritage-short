@@ -76,3 +76,10 @@
 {"ts": "2026-11-26T15:08:52+00:00", "stage": "assemble-radio", "seconds": 33.39, "draft": false}
 {"ts": "2026-11-26T15:08:53+00:00", "stage": "shots-export", "seconds": 0.16}
 {"ts": "2026-11-26T15:08:53+00:00", "stage": "music-export", "seconds": 0.14}
+{"ts": "2026-11-26T18:07:25+00:00", "stage": "shots-export", "seconds": 0.19}
+{"ts": "2026-11-26T18:23:23+00:00", "stage": "music-import", "seconds": 0.07}
+{"ts": "2026-11-26T18:25:53+00:00", "stage": "narration", "seconds": 0.83}
+{"ts": "2026-11-26T18:25:53+00:00", "stage": "keyframes-build", "seconds": 0.04}
+{"ts": "2026-11-26T18:25:53+00:00", "stage": "shots-build", "seconds": 0.01}
+{"ts": "2026-11-26T18:25:53+00:00", "stage": "music-build", "seconds": 0.07}
+{"ts": "2026-11-26T18:28:17+00:00", "stage": "assemble", "seconds": 143.47, "draft": false}

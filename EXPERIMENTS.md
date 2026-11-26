@@ -59,3 +59,15 @@ Result: fake film 221 s end to end; real film assembly 238 s for both aspects (1
 segments); radio cut 22 s. About 3× slower than the reference machine. Evidence: outputs/stage_times.jsonl.
 Decision: use `make draft` (half resolution) while iterating; full `make film` only for tester versions and
 the final. Budget ~4 min per full render in the plan.
+
+## E5 — Which ACE-Step candidate sits best under the narration?
+Date: 2026-11-26
+Hypothesis: If I pick the candidate with a moderate loudness range, then it will sit under the voice without
+fighting it or sounding flat, because big swings compete with the narration and a flat track adds no movement.
+Change: rendered 3 seeds (100, 101, 102) of the same caption/bpm/key on Kaggle T4 (ACE-Step 1.5 turbo, 68 s);
+set storyboard music.chosen = outputs/music/candidates/cand_101.wav. Commit: (not committed yet)
+Result: all 3 ok (78.2 s, 28.1 s, 26.1 s; first run includes model load). EBU R128 measurements:
+cand_100 -15.8 LUFS, LRA 12.3 LU · cand_101 -14.7 LUFS, LRA 7.9 LU · cand_102 -15.0 LUFS, LRA 2.7 LU.
+Final films at -14.1 LUFS. Evidence: runs.jsonl 686754670912 / 6eb21b3af02d / 603bb2df588d; outputs/music/candidates/.
+Chosen by the coding agent from measurements only, not by listening — needs a listening check.
+Decision: keep cand_101 unless a listening pass under the narration prefers another.

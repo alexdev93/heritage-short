@@ -44,8 +44,8 @@
     "key": "A minor",
     "instrumental": true,
     "lyrics": null,
-    "chosen": null,
-    "chosen_reason": null,
+    "chosen": "outputs/music/candidates/cand_101.wav",
+    "chosen_reason": "Picked by the coding agent at the trainee's request, by loudness measurement only (not by listening): cand_101 has a moderate loudness range (7.9 LU) vs cand_100 (12.3 LU, big swings under the voice) and cand_102 (2.7 LU, flat). Trainee to confirm by ear.",
     "volume_db": -8,
     "cues": [
       {

@@ -146,3 +146,20 @@ Cause: Kaggle's current accelerator offering; notebook and dataset slugs share a
 Tried: 1) used GPU T4 x2 for both notebooks  2) renamed the notebook to heritage-wan-shots-nb.
 Fix or workaround: both of the above. Wan Version 1 (Save & Run All) started running on T4 x2.
 Cost: a few minutes; T4 x2 uses the same 30 h/week GPU quota.
+
+## F11 — Wan 2.2 on a T4: decord import error, then CUDA out of memory at 1280*704
+Date: 2026-11-26
+Symptom: 1) Version 1: all 8 shots failed in ~10 s each with ModuleNotFoundError: No module named 'decord'
+(wan/__init__.py imports speech2video unconditionally). 2) Version 3 (decord fix in): s01 failed after 497 s with
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 1.85 GiB ... total capacity of 14.56 GiB, 1.26 GiB free.
+Evidence: heritage-wan-shots-nb logs, Versions 1 and 3 (runs_kaggle.jsonl not downloaded).
+Cause: 1) S2V/Animate deps not installed for TI2V. 2) 1280*704 x 121 frames doesn't fit a 16 GB T4 even with
+--offload_model True --t5_cpu --convert_model_dtype.
+Tried: 1) made the speech2video/animate imports optional  2) Version 3 at 1280*704 (OOM).
+Fix or workaround: WAN_SIZE=832*480 in .env (it's in the clip cache key, so jobs were re-exported with new keys);
+wan22_shots.py adds 832*480 / 480*832 to Wan's SUPPORTED_SIZES for ti2v-5B, because generate.py only accepts 1280*704.
+Version 4 (832*480, dataset v5): s01 also failed after 480 s with torch.OutOfMemoryError (tried to allocate
+140 MiB, 22.8 MiB free). Cancelled v3 and v4 at ~21:25 EAT.
+Outcome: no Wan clips for the deadline. All 8 shots render as Ken Burns over their keyframes (the built-in fallback);
+film_9x16 / film_16x9 built at 21:28, 66 s, -14.1 LUFS. Next time: fewer frames (e.g. 49-81) or a 24 GB+ GPU.
+Cost: ~6 min (v1) + ~36 min (v3) + ~16 min (v4) GPU on T4 x2.

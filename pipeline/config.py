@@ -52,7 +52,7 @@ CF_IMAGE_HEIGHT = int(env("CF_IMAGE_HEIGHT", "1024"))
 # FLUX.1 schnell on Workers AI may not accept a seed; turn this on only if the model's schema lists one.
 CF_IMAGE_SEND_SEED = env("CF_IMAGE_SEND_SEED", "false").lower() == "true"
 
-WAN_SIZE = env("WAN_SIZE", "1280*704")  # Wan 2.2 TI2V-5B supports 1280*704 or 704*1280
+WAN_SIZE = env("WAN_SIZE", "1280*704")  # 1280*704 is official for TI2V-5B but OOMs on a T4; .env uses 832*480
 WAN_FPS = 24
 WAN_MAX_FRAMES = 121  # about 5 s at 24 fps; frame counts must be 4n+1
 
